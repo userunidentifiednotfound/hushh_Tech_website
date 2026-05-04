@@ -25,3 +25,10 @@ export class StorageError extends IntelligenceError {
     this.name = "StorageError";
   }
 }
+
+export class ValidationError extends IntelligenceError {
+  constructor(message: string) {
+    super(message);
+    this.name = "ValidationError";
+  }
+}
