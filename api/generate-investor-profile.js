@@ -1,3 +1,6 @@
+import { applyCors, checkRateLimit } from './shared/rateLimiter.js';
+import { sendSafeError, sendUpstreamError } from './shared/errorResponse.js';
+
 /**
  * Serverless function to generate investor profile using OpenAI GPT-4o API
  * This runs server-side to avoid CORS issues and keep API keys secure
@@ -100,24 +103,27 @@ const PROFILE_SCHEMA = {
 };
 
 export default async function handler(req, res) {
-  // Set CORS headers
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization'
-  );
-
-  // Handle preflight request
+  // Handle CORS preflight with strict origin allowlist.
   if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
+    if (!applyCors(req, res)) return;
+    return res.status(204).end();
   }
+
+  if (!applyCors(req, res)) return;
 
   // Only allow POST requests
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed. Use POST.' });
+  }
+
+  // Rate limit: 5 profile generations per IP per minute (OpenAI calls are expensive).
+  const rateResult = checkRateLimit(req, { route: 'generate-investor-profile', maxRequests: 5, windowMs: 60_000 });
+  res.setHeader('X-RateLimit-Limit', 5);
+  res.setHeader('X-RateLimit-Remaining', rateResult.remaining);
+  res.setHeader('X-RateLimit-Reset', Math.ceil(rateResult.resetAt / 1000));
+  if (!rateResult.allowed) {
+    res.setHeader('Retry-After', '60');
+    return res.status(429).json({ error: 'Too many requests. Please try again in a minute.' });
   }
 
   try {
@@ -180,9 +186,7 @@ export default async function handler(req, res) {
     if (!response.ok) {
       const errorText = await response.text();
       console.error('OpenAI API error:', response.status, errorText);
-      return res.status(response.status).json({ 
-        error: `OpenAI API failed: ${errorText}` 
-      });
+      return sendUpstreamError(res, { upstream: 'openai', status: response.status, body: errorText });
     }
 
     const data = await response.json();
@@ -216,8 +220,6 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error('Error generating investor profile:', error);
-    return res.status(500).json({ 
-      error: error.message || 'Failed to generate investor profile' 
-    });
+    return sendSafeError(res, error, { context: 'generate-investor-profile' });
   }
 }

@@ -3,13 +3,7 @@
 
 import nodemailer from 'nodemailer';
 import { createClient } from '@supabase/supabase-js';
-
-// CORS headers
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
-};
+import { applyCors, checkRateLimit } from './shared/rateLimiter.js';
 
 function createSupabaseAdminClient() {
   const supabaseUrl = process.env.SUPABASE_URL?.trim();
@@ -54,11 +48,24 @@ async function resolvePublicProfileOwner(slug) {
 export default async function handler(req, res) {
   // Handle CORS preflight
   if (req.method === 'OPTIONS') {
-    return res.status(200).json({ ok: true });
+    if (!applyCors(req, res)) return;
+    return res.status(204).end();
   }
+
+  if (!applyCors(req, res)) return;
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  // Rate limit: 10 email requests per IP per minute to prevent abuse.
+  const rateResult = checkRateLimit(req, { route: 'send-email-notification', maxRequests: 10, windowMs: 60_000 });
+  res.setHeader('X-RateLimit-Limit', 10);
+  res.setHeader('X-RateLimit-Remaining', rateResult.remaining);
+  res.setHeader('X-RateLimit-Reset', Math.ceil(rateResult.resetAt / 1000));
+  if (!rateResult.allowed) {
+    res.setHeader('Retry-After', '60');
+    return res.status(429).json({ error: 'Too many requests. Please try again in a minute.' });
   }
 
   try {
