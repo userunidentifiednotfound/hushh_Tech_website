@@ -140,20 +140,32 @@ describe("checkRateLimit", () => {
 // ---------------------------------------------------------------------------
 
 describe("isAllowedOrigin", () => {
-  it("allows hushhtech.com", () => {
-    expect(isAllowedOrigin("https://hushhtech.com")).toBe(true);
+  it("allows hushhtech.com on POST", () => {
+    expect(isAllowedOrigin("https://hushhtech.com", "POST")).toBe(true);
   });
 
-  it("allows www.hushhtech.com", () => {
-    expect(isAllowedOrigin("https://www.hushhtech.com")).toBe(true);
+  it("allows www.hushhtech.com on POST", () => {
+    expect(isAllowedOrigin("https://www.hushhtech.com", "POST")).toBe(true);
   });
 
-  it("rejects an arbitrary external origin", () => {
-    expect(isAllowedOrigin("https://evil.example.com")).toBe(false);
+  it("rejects an arbitrary external origin on POST", () => {
+    expect(isAllowedOrigin("https://evil.example.com", "POST")).toBe(false);
   });
 
-  it("allows undefined origin (server-to-server)", () => {
-    expect(isAllowedOrigin(undefined)).toBe(true);
+  it("rejects absent origin on POST — non-browser clients must not use browser-facing endpoints", () => {
+    expect(isAllowedOrigin(undefined, "POST")).toBe(false);
+  });
+
+  it("rejects empty string origin on POST", () => {
+    expect(isAllowedOrigin("", "POST")).toBe(false);
+  });
+
+  it("allows absent origin on GET (public read)", () => {
+    expect(isAllowedOrigin(undefined, "GET")).toBe(true);
+  });
+
+  it("allows absent origin on OPTIONS (preflight)", () => {
+    expect(isAllowedOrigin(undefined, "OPTIONS")).toBe(true);
   });
 });
 
@@ -178,6 +190,14 @@ describe("applyCors", () => {
     expect(res._status).toBe(403);
   });
 
+  it("rejects POST with no Origin header — blocks curl and server-side scripts", () => {
+    const req = makeReq({ headers: {}, method: "POST" });
+    const res = makeRes();
+    const result = applyCors(req, res);
+    expect(result).toBe(false);
+    expect(res._status).toBe(403);
+  });
+
   it("allows GET from any origin (public read)", () => {
     const req = makeReq({ headers: { origin: "https://attacker.io" }, method: "GET" });
     const res = makeRes();
@@ -185,8 +205,22 @@ describe("applyCors", () => {
     expect(result).toBe(true);
   });
 
+  it("allows GET with no Origin header", () => {
+    const req = makeReq({ headers: {}, method: "GET" });
+    const res = makeRes();
+    const result = applyCors(req, res);
+    expect(result).toBe(true);
+  });
+
   it("allows OPTIONS preflight from any origin", () => {
     const req = makeReq({ headers: { origin: "https://attacker.io" }, method: "OPTIONS" });
+    const res = makeRes();
+    const result = applyCors(req, res);
+    expect(result).toBe(true);
+  });
+
+  it("allows OPTIONS with no Origin header", () => {
+    const req = makeReq({ headers: {}, method: "OPTIONS" });
     const res = makeRes();
     const result = applyCors(req, res);
     expect(result).toBe(true);

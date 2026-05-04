@@ -122,7 +122,12 @@ export function rateLimitMiddleware({ route, windowMs = DEFAULT_WINDOW_MS, maxRe
 
 /**
  * Allowed origins for CORS on API routes.
- * Requests from unlisted origins receive a 403 on non-GET routes.
+ * Requests from unlisted origins receive a 403 on non-GET, non-OPTIONS routes.
+ *
+ * These endpoints are browser-facing only. Server-to-server callers (no Origin
+ * header) are also rejected on mutating methods — legitimate internal callers
+ * should use service-account auth or a dedicated internal route, not the
+ * browser-facing API surface.
  */
 const ALLOWED_ORIGINS = new Set([
   "https://hushhtech.com",
@@ -136,11 +141,25 @@ const ALLOWED_ORIGINS = new Set([
 /**
  * Validate the Origin header against the allowlist.
  *
+ * Returns false for absent Origin on mutating methods — these endpoints are
+ * browser-facing and should not be callable from server-side scripts without
+ * an explicit Origin. Absent Origin is only allowed for OPTIONS preflight
+ * (some proxies strip it) and GET requests (public reads).
+ *
  * @param {string | undefined} origin
+ * @param {string} method - HTTP method of the request.
  * @returns {boolean}
  */
-export function isAllowedOrigin(origin) {
-  if (!origin) return true; // Server-to-server calls have no Origin.
+export function isAllowedOrigin(origin, method = "POST") {
+  // OPTIONS preflight and GET reads are always allowed regardless of Origin.
+  if (method === "OPTIONS" || method === "GET") return true;
+
+  // Mutating requests (POST, PUT, PATCH, DELETE) with no Origin header are
+  // rejected. Browsers always send Origin on cross-origin requests; its
+  // absence on a mutating call indicates a non-browser client (curl, script,
+  // server) which should not be using this browser-facing endpoint.
+  if (!origin || !origin.trim()) return false;
+
   return ALLOWED_ORIGINS.has(origin.trim());
 }
 
@@ -154,7 +173,8 @@ export function isAllowedOrigin(origin) {
  */
 export function applyCors(req, res) {
   const origin = req.headers?.origin;
-  const allowed = isAllowedOrigin(origin);
+  const method = req.method || "POST";
+  const allowed = isAllowedOrigin(origin, method);
 
   if (origin && allowed) {
     res.setHeader("Access-Control-Allow-Origin", origin);
@@ -165,8 +185,8 @@ export function applyCors(req, res) {
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   res.setHeader("Access-Control-Max-Age", "600");
 
-  // Reject mutating requests from disallowed origins.
-  if (!allowed && req.method !== "GET" && req.method !== "OPTIONS") {
+  // Reject mutating requests from disallowed or absent origins.
+  if (!allowed && method !== "GET" && method !== "OPTIONS") {
     res.status(403).json({ error: "Origin not allowed" });
     return false;
   }
