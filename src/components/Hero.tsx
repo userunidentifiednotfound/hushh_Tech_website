@@ -259,50 +259,157 @@ export default function Hero() {
       {/* Scrollable content */}
       <Box
         as="main"
-        maxW="393px"
+        maxW={{ base: "393px", md: "768px", lg: "1200px" }}
         mx="auto"
         pb="120px"
         pt="50px"
+        px={{ base: 0, lg: 8 }}
       >
         {/* ═══ Section 1: Investment Intro ═══ */}
-        <Flex flexDir="column" align="center" px={6} pt={4} pb={2} bg="white" borderBottomRadius="0">
-          {/* Hushh Brand Logo */}
-          <Flex
-            w="72px" h="72px" borderRadius="full"
-            bg="white" align="center" justify="center" mb={6}
-            border="1px solid" borderColor="gray.100"
-            boxShadow="0 2px 12px rgba(0,0,0,0.06)"
-          >
-            <Image
-              src={HushhLogo}
-              alt="Hushh brand logo"
-              w="48px" h="48px"
-              objectFit="contain"
-            />
+        <Flex
+          flexDir={{ base: "column", lg: "row" }}
+          align={{ base: "center", lg: "flex-start" }}
+          px={{ base: 6, lg: 0 }}
+          pt={4} pb={2} bg="white" gap={{ lg: 16 }}
+        >
+          {/* Left: brand + title + subtitle + CTAs */}
+          <Flex flexDir="column" align={{ base: "center", lg: "flex-start" }} flex="1">
+            {/* Hushh Brand Logo */}
+            <Flex
+              w="72px" h="72px" borderRadius="full"
+              bg="white" align="center" justify="center" mb={6}
+              border="1px solid" borderColor="gray.100"
+              boxShadow="0 2px 12px rgba(0,0,0,0.06)"
+            >
+              <Image src={HushhLogo} alt="Hushh brand logo" w="48px" h="48px" objectFit="contain" />
+            </Flex>
+
+            {/* Title */}
+            <Text
+              fontSize={{ base: "34px", lg: "48px", xl: "56px" }}
+              lineHeight={{ base: "41px", lg: "56px" }}
+              fontWeight="700"
+              textAlign={{ base: "center", lg: "left" }}
+              letterSpacing="-0.02em"
+              fontFamily={IOS.fontDisplay} color={IOS.text} mb={3}
+            >
+              Investing in the <br />
+              <Box as="span" color={IOS.blue}>Future</Box>
+            </Text>
+
+            {/* Subtitle */}
+            <Text
+              fontSize={{ base: "17px", lg: "18px" }}
+              lineHeight="22px"
+              textAlign={{ base: "center", lg: "left" }}
+              color={IOS.subtext} fontWeight="400" letterSpacing="-0.01em"
+              px={{ base: 2, lg: 0 }} mb={4} maxW={{ lg: "420px" }}
+            >
+              The AI-Powered Berkshire Hathaway. We combine AI and human expertise
+              to invest in exceptional businesses for long-term value creation.
+            </Text>
+
+            {/* CTAs */}
+            <Flex
+              w="100%"
+              direction={{ base: "column", sm: "row" }}
+              gap={3} mt={2} mb={2}
+              maxW={{ lg: "420px" }}
+            >
+              <Box
+                as="button" flex="1" bg={IOS.blue} color="white"
+                fontWeight="600" fontSize="17px" py="16px" borderRadius="14px"
+                textAlign="center" cursor="pointer"
+                transition="background 0.2s"
+                _active={{ bg: IOS.blueActive }}
+                _disabled={{ opacity: 0.6, cursor: "not-allowed" }}
+                onClick={primaryCTA.action}
+                aria-label={primaryCTA.text}
+                {...(primaryCTA.loading ? { opacity: 0.6 } : {})}
+              >
+                {primaryCTA.loading ? <Spinner size="sm" color="white" /> : primaryCTA.text}
+              </Box>
+
+              <Box
+                as="button" flex="1" bg={IOS.fillGray} color={IOS.blue}
+                fontWeight="600" fontSize="17px" py="16px" borderRadius="14px"
+                textAlign="center" cursor="pointer"
+                transition="background 0.2s"
+                _active={{ bg: "#E5E5EA" }}
+                onClick={() => navigate("/discover-fund-a")}
+              >
+                Discover Fund A
+              </Box>
+            </Flex>
+
+            {/* Trust Badges */}
+            <Flex align="center" justify={{ base: "center", lg: "flex-start" }} gap={6} mt={4} mb={6} opacity={0.6}>
+              <Flex align="center" gap={1.5}>
+                <ShieldIcon />
+                <Text fontSize="10px" fontWeight="600" color="#8E8E93" letterSpacing="0.04em" textTransform="uppercase">
+                  SEC Registered
+                </Text>
+              </Flex>
+              <Box w="1px" h="12px" bg="rgba(0,0,0,0.1)" />
+              <Flex align="center" gap={1.5}>
+                <LockSmallIcon />
+                <Text fontSize="10px" fontWeight="600" color="#8E8E93" letterSpacing="0.04em" textTransform="uppercase">
+                  Bank Level Security
+                </Text>
+              </Flex>
+            </Flex>
           </Flex>
 
-          {/* Title */}
-          <Text
-            fontSize="34px" lineHeight="41px" fontWeight="700"
-            textAlign="center" letterSpacing="-0.02em"
-            fontFamily={IOS.fontDisplay} color={IOS.text} mb={3}
+          {/* Right: AI + Human cards — only on desktop */}
+          <Flex
+            display={{ base: "none", lg: "flex" }}
+            flex="1" gap={4} flexWrap="wrap" align="flex-start" pt={8}
           >
-            Investing in the <br />
-            <Box as="span" color={IOS.blue}>Future</Box>
-          </Text>
+            {/* AI Card */}
+            <Box
+              flex="1" minW="180px" bg="white" borderRadius="16px"
+              p={4} pb={5}
+              border="0.5px solid" borderColor="rgba(0,0,0,0.06)"
+              boxShadow="0 1px 3px rgba(0,0,0,0.04)"
+            >
+              <Box w="8px" h="8px" borderRadius="full" bg={IOS.blue} mb={3} />
+              <Text fontSize="22px" fontWeight="700" color={IOS.text}
+                lineHeight="26px" letterSpacing="-0.02em"
+                fontFamily={IOS.fontDisplay} mb={1}
+              >
+                AI-Powered
+              </Text>
+              <Text fontSize="13px" lineHeight="18px" color={IOS.subtext}>
+                Institutional grade analytics and real-time signals.
+              </Text>
+            </Box>
 
-          {/* Subtitle */}
-          <Text
-            fontSize="17px" lineHeight="22px" textAlign="center"
-            color={IOS.subtext} fontWeight="400" letterSpacing="-0.01em"
-            px={2} mb={4}
-          >
-            The AI-Powered Berkshire Hathaway. We combine AI and human expertise
-            to invest in exceptional businesses for long-term value creation.
-          </Text>
+            {/* Human Card */}
+            <Box
+              flex="1" minW="180px" bg="white" borderRadius="16px"
+              p={4} pb={5}
+              border="0.5px solid" borderColor="rgba(0,0,0,0.06)"
+              boxShadow="0 1px 3px rgba(0,0,0,0.04)"
+            >
+              <Box w="8px" h="8px" borderRadius="full" bg="#34C759" mb={3} />
+              <Text fontSize="22px" fontWeight="700" color={IOS.text}
+                lineHeight="26px" letterSpacing="-0.02em"
+                fontFamily={IOS.fontDisplay} mb={1}
+              >
+                Human-Led
+              </Text>
+              <Text fontSize="13px" lineHeight="18px" color={IOS.subtext}>
+                Seasoned expert oversight for generational wealth.
+              </Text>
+            </Box>
+          </Flex>
+        </Flex>
 
-          {/* AI + Human — Two iOS widget cards */}
-          <Flex w="100%" gap={3} my={4}>
+        {/* AI + Human cards — mobile only */}
+        <Flex
+          display={{ base: "flex", lg: "none" }}
+          w="100%" gap={3} my={4} px={6}
+        >
             {/* AI Card */}
             <Box
               flex="1" bg="white" borderRadius="16px"
@@ -395,9 +502,11 @@ export default function Hero() {
         </Flex>
 
         {/* ═══ Section 2: The Hushh Advantage ═══ */}
-        <Box px={5} pt={8} pb={4}>
+        <Box px={{ base: 5, lg: 0 }} pt={8} pb={4}>
           <Text
-            fontSize="34px" lineHeight="41px" fontWeight="700"
+            fontSize={{ base: "34px", lg: "40px" }}
+            lineHeight={{ base: "41px", lg: "48px" }}
+            fontWeight="700"
             letterSpacing="-0.02em" fontFamily={IOS.fontDisplay} color={IOS.text}
           >
             The Hushh <br />
@@ -405,21 +514,21 @@ export default function Hero() {
           </Text>
         </Box>
 
-        <Box px={4} mb={8}>
+        <Box px={{ base: 4, lg: 0 }} mb={8}>
           <Flex gap={3} wrap="wrap">
-            <Box flex="1" minW="45%">
+            <Box flex="1" minW={{ base: "45%", lg: "22%" }}>
               <FeatureCard icon="analytics" iconBg="rgba(0,122,255,0.1)" iconColor={IOS.blue}
                 title="Data Driven" desc="Real-time market analytics." />
             </Box>
-            <Box flex="1" minW="45%">
+            <Box flex="1" minW={{ base: "45%", lg: "22%" }}>
               <FeatureCard icon="percent" iconBg="rgba(52,199,89,0.12)" iconColor="#34C759"
                 title="Low Fees" desc="Maximize your total returns." />
             </Box>
-            <Box flex="1" minW="45%">
+            <Box flex="1" minW={{ base: "45%", lg: "22%" }}>
               <FeatureCard icon="verified_user" iconBg="rgba(255,149,0,0.12)" iconColor="#FF9500"
                 title="Expert Vetted" desc="Curated top opportunities." />
             </Box>
-            <Box flex="1" minW="45%">
+            <Box flex="1" minW={{ base: "45%", lg: "22%" }}>
               <FeatureCard icon="smart_toy" iconBg="rgba(175,82,222,0.12)" iconColor="#AF52DE"
                 title="Automated" desc="Hands-free smart investing." />
             </Box>
@@ -427,7 +536,7 @@ export default function Hero() {
         </Box>
 
         {/* ═══ Section 3: Fund A ═══ */}
-        <Box px={5} mb={2} mt={4}>
+        <Box px={{ base: 5, lg: 0 }} mb={2} mt={4}>
           <Text fontSize="22px" lineHeight="28px" fontWeight="700"
             fontFamily={IOS.fontDisplay} color={IOS.text} letterSpacing="0.35px"
           >
@@ -436,7 +545,7 @@ export default function Hero() {
         </Box>
 
         {/* Performance Card */}
-        <Box px={4} mb={6}>
+        <Box px={{ base: 4, lg: 0 }} mb={6} maxW={{ lg: "640px" }}>
           <Box bg="white" borderRadius="20px" p={5}
             boxShadow="0 1px 3px rgba(0,0,0,0.04)" border="1px solid rgba(0,0,0,0.03)"
           >
@@ -480,7 +589,7 @@ export default function Hero() {
         </Box>
 
         {/* Strategy List */}
-        <Box px={4} mb={8}>
+        <Box px={{ base: 4, lg: 0 }} mb={8} maxW={{ lg: "640px" }}>
           <Box bg="white" borderRadius="10px" overflow="hidden">
             <StrategyItem icon="trending_up" iconBg="#3B82F6" title="High Growth" subtitle="Accelerated" />
             <StrategyItem icon="grid_view" iconBg="#6B7280" title="Diversified" subtitle="Multi-sector" />
@@ -490,7 +599,7 @@ export default function Hero() {
         </Box>
 
         {/* Bottom CTAs */}
-        <Box px={4} mb={8}>
+        <Box px={{ base: 4, lg: 0 }} mb={8} maxW={{ lg: "480px" }}>
           <Box
             as="button" w="100%" bg={IOS.blue} color="white"
             fontWeight="600" fontSize="17px" py="14px" borderRadius="14px"
