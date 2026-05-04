@@ -12,6 +12,7 @@
 import express from 'express';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { requestLoggerMiddleware, logEvent } from './api/shared/requestLogger.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -27,6 +28,9 @@ const DIST_DIR = join(__dirname, 'dist');
 // Parse JSON & URL-encoded bodies
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
+
+// Structured JSON request logging — must come before route handlers.
+app.use(requestLoggerMiddleware);
 
 // Global security headers for Cloud Run. This file is the authoritative runtime config.
 app.use((_req, res, next) => {
@@ -161,6 +165,5 @@ app.get('*', (req, res) => {
 // Start Server
 // ---------------------------------------------------------------------------
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Hushh Tech Website running on port ${PORT}`);
-  console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
+  logEvent('INFO', 'Hushh Tech Website started', { port: PORT, environment: process.env.NODE_ENV ?? 'development' });
 });
