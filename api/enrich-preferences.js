@@ -1,4 +1,5 @@
 import { parsePhoneNumberFromString } from "libphonenumber-js";
+import { sendSafeError, sendUpstreamError } from "./shared/errorResponse.js";
 
 const REQUIRED_FIELDS = [
   "name",
@@ -222,9 +223,7 @@ Rules:
     if (!aiResponse.ok) {
       const errorText = await aiResponse.text();
       console.error("OpenAI error:", aiResponse.status, errorText);
-      return response
-        .status(502)
-        .json({ error: "OpenAI request failed", detail: errorText || aiResponse.statusText });
+      return sendUpstreamError(response, { upstream: "openai", status: aiResponse.status, body: errorText });
     }
 
     const data = await aiResponse.json();
@@ -250,7 +249,6 @@ Rules:
     return response.status(200).json({ preferences: parsed });
   } catch (error) {
     console.error("Enrichment handler failed:", error);
-    const message = error instanceof Error ? error.message : "Unknown error";
-    return response.status(500).json({ error: message });
+    return sendSafeError(response, error, { context: "enrich-preferences" });
   }
 }

@@ -1,3 +1,5 @@
+import { sendSafeError, sendUpstreamError } from './shared/errorResponse.js';
+
 /**
  * Serverless function to generate investor profile using OpenAI GPT-4o API
  * This runs server-side to avoid CORS issues and keep API keys secure
@@ -180,9 +182,7 @@ export default async function handler(req, res) {
     if (!response.ok) {
       const errorText = await response.text();
       console.error('OpenAI API error:', response.status, errorText);
-      return res.status(response.status).json({ 
-        error: `OpenAI API failed: ${errorText}` 
-      });
+      return sendUpstreamError(res, { upstream: 'openai', status: response.status, body: errorText });
     }
 
     const data = await response.json();
@@ -216,8 +216,6 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error('Error generating investor profile:', error);
-    return res.status(500).json({ 
-      error: error.message || 'Failed to generate investor profile' 
-    });
+    return sendSafeError(res, error, { context: 'generate-investor-profile' });
   }
 }
