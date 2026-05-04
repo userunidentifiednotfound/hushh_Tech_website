@@ -211,6 +211,18 @@ async function githubRequest(apiPath, options = {}) {
 
   if (!response.ok) {
     const text = await response.text();
+    // 403 on comment write is expected for fork PRs — the GITHUB_TOKEN from
+    // pull_request_target does not have issues:write on the base repo when the
+    // PR originates from a fork. Treat it as a non-fatal warning so the step
+    // summary is still written and the workflow exits 0.
+    if (response.status === 403 && (options.method === "POST" || options.method === "PATCH")) {
+      console.warn(
+        `[signalkeeper] GitHub API 403 on comment write — fork PR token lacks issues:write. ` +
+        `Preflight summary will be written to the step summary only. ` +
+        `Ask a maintainer to approve workflows for this fork PR if a comment is needed.`
+      );
+      return null;
+    }
     throw new Error(`GitHub API ${response.status} ${response.statusText}: ${text}`);
   }
 
