@@ -11,6 +11,21 @@ import {
   type AuthSessionReason,
 } from "../src/auth/session";
 
+// jsdom's localStorage implementation does not fully implement the Web Storage API
+// in all versions (missing .clear(), .removeItem() etc.). Stub it with a real
+// in-memory implementation so tests are hermetic and don't depend on jsdom internals.
+function makeStorageStub(): Storage {
+  let store: Record<string, string> = {};
+  return {
+    getItem: (key: string) => store[key] ?? null,
+    setItem: (key: string, value: string) => { store[key] = String(value); },
+    removeItem: (key: string) => { delete store[key]; },
+    clear: () => { store = {}; },
+    get length() { return Object.keys(store).length; },
+    key: (index: number) => Object.keys(store)[index] ?? null,
+  } as Storage;
+}
+
 const MOCK_SESSION = {
   access_token: "access-token",
   refresh_token: "refresh-token",
@@ -118,6 +133,8 @@ describe("AuthSessionProvider", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
+    vi.stubGlobal("localStorage", makeStorageStub());
+    vi.stubGlobal("sessionStorage", makeStorageStub());
 
     container = document.createElement("div");
     document.body.appendChild(container);
@@ -134,6 +151,7 @@ describe("AuthSessionProvider", () => {
       root.unmount();
     });
     container.remove();
+    vi.unstubAllGlobals();
   });
 
   it("authenticates a valid persisted session", async () => {
@@ -272,6 +290,8 @@ describe("HushhTechNavDrawer auth gating", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
+    vi.stubGlobal("localStorage", makeStorageStub());
+    vi.stubGlobal("sessionStorage", makeStorageStub());
     container = document.createElement("div");
     document.body.appendChild(container);
     root = createRoot(container);
@@ -286,6 +306,7 @@ describe("HushhTechNavDrawer auth gating", () => {
       root.unmount();
     });
     container.remove();
+    vi.unstubAllGlobals();
   });
 
   it("shows guest actions and hides account actions when no session exists", async () => {
@@ -379,6 +400,8 @@ describe("auth-aware guest routing", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
+    vi.stubGlobal("localStorage", makeStorageStub());
+    vi.stubGlobal("sessionStorage", makeStorageStub());
     container = document.createElement("div");
     document.body.appendChild(container);
     root = createRoot(container);
@@ -393,6 +416,7 @@ describe("auth-aware guest routing", () => {
       root.unmount();
     });
     container.remove();
+    vi.unstubAllGlobals();
   });
 
   it("shows a Log In footer tab for guests and routes it to the profile login redirect", async () => {

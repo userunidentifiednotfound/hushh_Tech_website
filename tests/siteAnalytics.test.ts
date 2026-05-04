@@ -12,9 +12,26 @@ vi.mock("../src/resources/config/config", () => ({
   },
 }));
 
+// jsdom's localStorage implementation may not expose .clear()/.removeItem() in all
+// versions. Stub it with a real in-memory implementation so tests are hermetic.
+function makeLocalStorageStub() {
+  let store: Record<string, string> = {};
+  return {
+    getItem: (key: string) => store[key] ?? null,
+    setItem: (key: string, value: string) => { store[key] = String(value); },
+    removeItem: (key: string) => { delete store[key]; },
+    clear: () => { store = {}; },
+    get length() { return Object.keys(store).length; },
+    key: (index: number) => Object.keys(store)[index] ?? null,
+  };
+}
+
 describe("site analytics client", () => {
   beforeEach(() => {
     vi.resetModules();
+    // Replace localStorage/sessionStorage with hermetic stubs before each test.
+    vi.stubGlobal("localStorage", makeLocalStorageStub());
+    vi.stubGlobal("sessionStorage", makeLocalStorageStub());
     window.localStorage.clear();
     window.sessionStorage.clear();
     window.history.replaceState(
