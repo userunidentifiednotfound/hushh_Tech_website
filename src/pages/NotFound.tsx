@@ -1,7 +1,15 @@
 /**
  * NotFound (404) Page
+ * 
  * Displayed when users navigate to non-existent routes.
- * Provides clear messaging and navigation options.
+ * Provides clear messaging and navigation options to guide users back to content.
+ * 
+ * Features:
+ * - Large 404 display for immediate recognition
+ * - Clear error messaging
+ * - Primary actions: Go Home, Contact Support
+ * - Quick links to popular pages
+ * - Consistent design with HushhTechHeader and HushhTechFooter
  */
 import { Link } from 'react-router-dom';
 import HushhTechHeader from '../components/hushh-tech-header/HushhTechHeader';
