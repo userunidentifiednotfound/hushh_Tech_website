@@ -27,7 +27,7 @@ const TermsOfServicePage: React.FC = () => {
           {/* Last Updated */}
           <Box textAlign="center">
             <Text fontSize="sm" color="gray.600">
-              Last Updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+              Last Updated: May 6, 2026
             </Text>
           </Box>
           <Divider />
