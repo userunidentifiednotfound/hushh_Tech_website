@@ -10,6 +10,7 @@
  */
 
 import express from 'express';
+import rateLimit from 'express-rate-limit';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
@@ -27,6 +28,24 @@ const DIST_DIR = join(__dirname, 'dist');
 // Parse JSON & URL-encoded bodies
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
+
+// Rate limiting for API routes to prevent abuse and DoS attacks
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP, please try again later.',
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  // Skip rate limiting for health checks and static assets
+  skip: (req) => {
+    return req.path === '/health' || 
+           req.path.startsWith('/assets/') || 
+           req.path.startsWith('/.well-known/');
+  },
+});
+
+// Apply rate limiting to all API routes
+app.use('/api/', apiLimiter);
 
 // Global security headers for Cloud Run. This file is the authoritative runtime config.
 app.use((_req, res, next) => {
