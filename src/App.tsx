@@ -25,6 +25,7 @@ import PrivacyPolicy from './pages/privacy-policy';
 import CareersPrivacyPolicy from './pages/career-privacy-policy';
 import CaliforniaPrivacyPolicy from './pages/california-privacy-policy';
 import EUUKPrivacyPolicy from './pages/eu-uk-privacy-policy';
+import TermsOfService from './pages/terms-of-service';
 import DeleteAccountPage from './pages/delete-account';
 import { ReactNode } from 'react';
 import Profile from './pages/profile';
@@ -185,6 +186,8 @@ function App() {
             } />
             <Route path='/california-privacy-policy' element={<CaliforniaPrivacyPolicy />} />
             <Route path='/eu-uk-jobs-privacy-policy' element={<EUUKPrivacyPolicy />} />
+            <Route path='/terms' element={<TermsOfService />} />
+            <Route path='/terms-of-service' element={<TermsOfService />} />
             <Route path='/delete-account' element={
               <AuthRequiredRoute>
                 <DeleteAccountPage />
