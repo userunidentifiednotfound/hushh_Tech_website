@@ -62,7 +62,7 @@ export default function NotFound() {
           {/* Helpful links */}
           <div className="mt-12 pt-8 border-t border-gray-200">
             <p className="text-sm text-gray-500 mb-4 font-medium">
-              You might be looking for:
+              Popular pages:
             </p>
             <div className="flex flex-wrap gap-2 justify-center">
               <Link
