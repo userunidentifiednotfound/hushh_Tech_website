@@ -1,26 +1,21 @@
 /**
  * NotFound (404) Page
- * 
+ *
  * Displayed when users navigate to non-existent routes.
  * Provides clear messaging and navigation options to guide users back to content.
- * 
+ *
  * Features:
  * - Large 404 display for immediate recognition
  * - Clear error messaging
  * - Primary actions: Go Home, Contact Support
  * - Quick links to popular pages
- * - Consistent design with HushhTechHeader and HushhTechFooter
+ * - Uses the existing app shell without introducing duplicate navigation chrome
  */
 import { Link } from 'react-router-dom';
-import HushhTechHeader from '../components/hushh-tech-header/HushhTechHeader';
-import HushhTechFooter, { HushhFooterTab } from '../components/hushh-tech-footer/HushhTechFooter';
 
 export default function NotFound() {
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      {/* Header with ticker */}
-      <HushhTechHeader showTicker={true} />
-
       {/* Main content - centered 404 error page */}
       <main className="flex-grow flex items-center justify-center px-6 py-12">
         <div className="text-center max-w-md">
@@ -93,9 +88,6 @@ export default function NotFound() {
           </div>
         </div>
       </main>
-
-      {/* Footer navigation */}
-      <HushhTechFooter activeTab={HushhFooterTab.HOME} />
     </div>
   );
 }
