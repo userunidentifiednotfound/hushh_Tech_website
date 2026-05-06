@@ -21,7 +21,7 @@ export default function NotFound() {
       {/* Header with ticker */}
       <HushhTechHeader showTicker={true} />
 
-      {/* Main content */}
+      {/* Main content - centered 404 error page */}
       <main className="flex-grow flex items-center justify-center px-6 py-12">
         <div className="text-center max-w-md">
           {/* Large 404 number */}
