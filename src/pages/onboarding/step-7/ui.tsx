@@ -4,6 +4,7 @@
  * Share class cards, edit modal, recurring investment config.
  * Logic stays in logic.ts — zero logic changes.
  */
+import { useRef } from 'react';
 import {
   useStep11Logic,
   SHARE_CLASSES,
@@ -22,6 +23,7 @@ import HushhTechBackHeader from '../../../components/hushh-tech-back-header/Hush
 import HushhTechCta, {
   HushhTechCtaVariant,
 } from '../../../components/hushh-tech-cta/HushhTechCta';
+import { useModalKeyboardNavigation } from '../../../hooks/useModalKeyboardNavigation';
 
 export default function OnboardingStep11() {
   const {
@@ -62,6 +64,15 @@ export default function OnboardingStep11() {
     setInvestmentDay,
     setShowRecurringEditor,
   } = useStep11Logic();
+  const allocationModalRef = useRef<HTMLDivElement>(null);
+  const cancelButtonRef = useRef<HTMLButtonElement>(null);
+
+  useModalKeyboardNavigation({
+    isOpen: isModalOpen,
+    containerRef: allocationModalRef,
+    initialFocusRef: cancelButtonRef,
+    onClose: handleCloseModal,
+  });
 
   return (
     <div className="bg-white text-gray-900 min-h-screen antialiased flex flex-col selection:bg-hushh-blue selection:text-white">
@@ -332,11 +343,18 @@ export default function OnboardingStep11() {
       {/* ═══ Edit Share Class Modal ═══ */}
       {isModalOpen && (
         <div className="fixed inset-0 z-[9999] flex items-end justify-center bg-black/50">
-          <div className="relative w-full max-w-md bg-white rounded-t-3xl shadow-2xl animate-slide-up max-h-[90vh] overflow-hidden flex flex-col">
+          <div
+            ref={allocationModalRef}
+            className="relative w-full max-w-md bg-white rounded-t-3xl shadow-2xl animate-slide-up max-h-[90vh] overflow-hidden flex flex-col"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="allocation-modal-title"
+            tabIndex={-1}
+          >
             {/* Modal Header */}
             <header className="flex items-center justify-between px-6 h-14 border-b border-gray-200 bg-white sticky top-0 z-10">
-              <button onClick={handleCloseModal} className="text-sm font-medium text-gray-500">Cancel</button>
-              <h2 className="text-sm font-semibold text-black">Edit Allocation</h2>
+              <button ref={cancelButtonRef} onClick={handleCloseModal} className="text-sm font-medium text-gray-500">Cancel</button>
+              <h2 id="allocation-modal-title" className="text-sm font-semibold text-black">Edit Allocation</h2>
               <button
                 onClick={handleSaveChanges}
                 disabled={!hasModalChanges || savingModal}

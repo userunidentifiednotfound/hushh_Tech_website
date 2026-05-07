@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+import { useModalKeyboardNavigation } from '../hooks/useModalKeyboardNavigation';
 
 interface LocationPermissionModalProps {
   isOpen: boolean;
@@ -13,6 +14,16 @@ export default function LocationPermissionModal({
   onSkip,
   isDetecting,
 }: LocationPermissionModalProps) {
+  const modalRef = useRef<HTMLDivElement>(null);
+  const requestButtonRef = useRef<HTMLButtonElement>(null);
+
+  useModalKeyboardNavigation({
+    isOpen,
+    containerRef: modalRef,
+    initialFocusRef: requestButtonRef,
+    onClose: onSkip,
+  });
+
   useEffect(() => {
     if (!isOpen) return;
 
@@ -34,8 +45,10 @@ export default function LocationPermissionModal({
       aria-label="Enable location"
     >
       <div
+        ref={modalRef}
         className="w-full max-w-md overflow-y-auto rounded-2xl bg-white shadow-2xl animate-scaleIn sm:rounded-3xl max-h-[calc(100dvh-1.5rem)] sm:max-h-[calc(100dvh-2rem)]"
         onClick={(e) => e.stopPropagation()}
+        tabIndex={-1}
       >
         <div className="p-5 sm:p-8 pb-[calc(1.25rem+env(safe-area-inset-bottom,0px))]">
           {/* Location Icon */}
@@ -90,6 +103,7 @@ export default function LocationPermissionModal({
           <div className="space-y-3">
             {/* CTA Button */}
             <button
+              ref={requestButtonRef}
               onClick={onRequestLocation}
               disabled={isDetecting}
               className="w-full flex items-center justify-center gap-3 px-5 py-3.5 sm:px-6 sm:py-4 text-white rounded-xl font-semibold text-base sm:text-lg active:scale-[0.98] transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50 disabled:cursor-wait bg-[#2F80ED] hover:bg-[#2570D4] disabled:hover:bg-[#2F80ED]"

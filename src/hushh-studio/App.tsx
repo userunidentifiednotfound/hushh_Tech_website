@@ -101,6 +101,7 @@ const HushhStudioApp: React.FC = () => {
             <button
               onClick={() => setShowGallery(!showGallery)}
               className="relative p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+              aria-label={showGallery ? "Hide generated videos gallery" : "Show generated videos gallery"}
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -195,6 +196,7 @@ const HushhStudioApp: React.FC = () => {
                   onClick={() => handleDownload(currentVideo.videoUrl)}
                   className="p-2 rounded-lg bg-black/50 backdrop-blur-sm hover:bg-black/70 transition-colors"
                   title="Download"
+                  aria-label="Download current video"
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -254,6 +256,7 @@ const HushhStudioApp: React.FC = () => {
               onClick={handleRandomPrompt}
               className="absolute bottom-3 right-3 p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors text-gray-400 hover:text-white"
               title="Random prompt"
+              aria-label="Use a random prompt"
             >
               🎲
             </button>
@@ -263,7 +266,7 @@ const HushhStudioApp: React.FC = () => {
           {error && (
             <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center justify-between">
               <p className="text-red-400">{error}</p>
-              <button onClick={clearError} className="text-red-400 hover:text-red-300">
+              <button onClick={clearError} className="text-red-400 hover:text-red-300" aria-label="Dismiss error message">
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -400,7 +403,7 @@ const HushhStudioApp: React.FC = () => {
           <div className="relative w-full max-w-md bg-slate-900 border-l border-white/10 overflow-y-auto">
             <div className="sticky top-0 p-4 bg-slate-900 border-b border-white/10 flex items-center justify-between">
               <h2 className="text-lg font-bold">Generated Videos</h2>
-              <button onClick={() => setShowGallery(false)} className="p-2 rounded-lg hover:bg-white/10">
+              <button onClick={() => setShowGallery(false)} className="p-2 rounded-lg hover:bg-white/10" aria-label="Close generated videos gallery">
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -433,6 +436,7 @@ const HushhStudioApp: React.FC = () => {
                           <button
                             onClick={() => handleDownload(video.videoUrl)}
                             className="p-1 hover:text-white transition-colors"
+                            aria-label="Download gallery video"
                           >
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -441,6 +445,7 @@ const HushhStudioApp: React.FC = () => {
                           <button
                             onClick={() => removeFromGallery(video.id)}
                             className="p-1 hover:text-red-400 transition-colors"
+                            aria-label="Remove video from gallery"
                           >
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />

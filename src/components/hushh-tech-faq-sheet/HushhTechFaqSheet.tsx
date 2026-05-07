@@ -3,7 +3,8 @@
  * Follows the unified design language: Playfair Display headings,
  * tracking-[0.2em] section headers, hushh-blue accents, ios-green badges.
  */
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import { useModalKeyboardNavigation } from "../../hooks/useModalKeyboardNavigation";
 
 /* ── FAQ Data ── */
 interface FaqItem {
@@ -100,6 +101,8 @@ const HushhTechFaqSheet: React.FC<HushhTechFaqSheetProps> = ({
 }) => {
   const [expandedIdx, setExpandedIdx] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const sheetRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   /* Animate in/out */
   useEffect(() => {
@@ -130,10 +133,22 @@ const HushhTechFaqSheet: React.FC<HushhTechFaqSheetProps> = ({
     setTimeout(onClose, 300);
   }, [onClose]);
 
+  useModalKeyboardNavigation({
+    isOpen,
+    containerRef: sheetRef,
+    initialFocusRef: closeButtonRef,
+    onClose: handleBackdropClick,
+  });
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[60]" role="dialog" aria-modal="true">
+    <div
+      className="fixed inset-0 z-[60]"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="hushh-tech-faq-title"
+    >
       {/* Backdrop */}
       <div
         className={`absolute inset-0 bg-black/50 transition-opacity duration-300 ${
@@ -144,9 +159,12 @@ const HushhTechFaqSheet: React.FC<HushhTechFaqSheetProps> = ({
 
       {/* Sheet */}
       <div
+        ref={sheetRef}
         className={`absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl max-h-[85vh] flex flex-col transition-transform duration-300 ease-out ${
           isVisible ? "translate-y-0" : "translate-y-full"
         }`}
+        aria-labelledby="hushh-tech-faq-title"
+        tabIndex={-1}
       >
         {/* Drag handle */}
         <div className="flex justify-center pt-3 pb-1">
@@ -156,6 +174,7 @@ const HushhTechFaqSheet: React.FC<HushhTechFaqSheetProps> = ({
         {/* Header */}
         <div className="px-6 pt-2 pb-4 flex items-center justify-between border-b border-gray-100">
           <h2
+            id="hushh-tech-faq-title"
             className="text-2xl font-normal text-black font-serif"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
@@ -163,6 +182,7 @@ const HushhTechFaqSheet: React.FC<HushhTechFaqSheetProps> = ({
             <span className="text-gray-400 italic font-light">Questions</span>
           </h2>
           <button
+            ref={closeButtonRef}
             onClick={handleBackdropClick}
             className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors"
             aria-label="Close FAQs"
