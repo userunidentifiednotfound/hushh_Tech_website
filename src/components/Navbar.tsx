@@ -219,7 +219,7 @@ export default function Navbar() {
             <div className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 border border-gray-200/50 shadow-sm shrink-0 overflow-hidden">
               <Image 
                 src={hushhLogo} 
-                alt="Hushh Logo" 
+                alt="Hushh Technologies - AI-Powered Investment Platform" 
                 className="w-7 h-7 object-contain"
               />
             </div>
