@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useModalKeyboardNavigation } from '../hooks/useModalKeyboardNavigation';
 
 interface PermissionHelpModalProps {
   isOpen: boolean;
@@ -7,6 +8,15 @@ interface PermissionHelpModalProps {
 
 const PermissionHelpModal = ({ isOpen, onClose }: PermissionHelpModalProps) => {
   const [browser, setBrowser] = useState<string>('chrome');
+  const modalRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  useModalKeyboardNavigation({
+    isOpen,
+    containerRef: modalRef,
+    initialFocusRef: closeButtonRef,
+    onClose,
+  });
 
   useEffect(() => {
     // Detect browser
@@ -27,16 +37,22 @@ const PermissionHelpModal = ({ isOpen, onClose }: PermissionHelpModalProps) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" onClick={onClose}>
       <div
+        ref={modalRef}
         className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="permission-help-title"
+        tabIndex={-1}
       >
         <div className="p-6">
           {/* Header */}
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-bold text-slate-900">
+            <h3 id="permission-help-title" className="text-lg font-bold text-slate-900">
               How to Enable Location Access
             </h3>
             <button
+              ref={closeButtonRef}
               onClick={onClose}
               className="text-slate-400 hover:text-slate-600 transition-colors"
               aria-label="Close modal"

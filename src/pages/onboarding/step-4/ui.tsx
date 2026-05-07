@@ -4,6 +4,7 @@
  * Logic stays in logic.ts — zero logic changes.
  * Uses HushhTechBackHeader + HushhTechCta reusable components.
  */
+import { useRef } from "react";
 import ReactCountryFlag from "react-country-flag";
 import {
   useStep5Logic,
@@ -17,6 +18,7 @@ import HushhTechBackHeader from "../../../components/hushh-tech-back-header/Hush
 import HushhTechCta, {
   HushhTechCtaVariant,
 } from "../../../components/hushh-tech-cta/HushhTechCta";
+import { useModalKeyboardNavigation } from "../../../hooks/useModalKeyboardNavigation";
 
 /** Material icon for each account type */
 const ACCOUNT_ICONS: Record<string, string> = {
@@ -49,6 +51,15 @@ export default function OnboardingStep5() {
     handleSkip,
     handleSelectDialCode,
   } = useStep5Logic();
+  const dialPickerRef = useRef<HTMLDivElement>(null);
+  const doneButtonRef = useRef<HTMLButtonElement>(null);
+
+  useModalKeyboardNavigation({
+    isOpen: showDialPicker,
+    containerRef: dialPickerRef,
+    initialFocusRef: doneButtonRef,
+    onClose: () => setShowDialPicker(false),
+  });
 
   return (
     <div className="bg-white text-gray-900 min-h-screen antialiased flex flex-col selection:bg-hushh-blue selection:text-white relative overflow-hidden">
@@ -288,16 +299,25 @@ export default function OnboardingStep5() {
 
           {/* Modal card */}
           <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center px-4 pb-0 sm:pb-0">
-            <div className="relative w-full max-w-sm bg-white rounded-t-3xl sm:rounded-3xl shadow-[0_20px_40px_-10px_rgba(0,0,0,0.08),0_0_1px_rgba(0,0,0,0.04)] border border-gray-100/50 flex flex-col max-h-[70vh]">
+            <div
+              ref={dialPickerRef}
+              className="relative w-full max-w-sm bg-white rounded-t-3xl sm:rounded-3xl shadow-[0_20px_40px_-10px_rgba(0,0,0,0.08),0_0_1px_rgba(0,0,0,0.04)] border border-gray-100/50 flex flex-col max-h-[70vh]"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="dial-picker-title"
+              tabIndex={-1}
+            >
               {/* Header */}
               <div className="flex items-center justify-between p-6 pb-4 border-b border-gray-100">
                 <h2
+                  id="dial-picker-title"
                   className="text-xl text-black tracking-tight font-serif"
                   style={{ fontFamily: "'Playfair Display', serif" }}
                 >
                   Select Country Code
                 </h2>
                 <button
+                  ref={doneButtonRef}
                   onClick={() => setShowDialPicker(false)}
                   className="text-xs font-bold uppercase tracking-widest text-black hover:underline"
                 >

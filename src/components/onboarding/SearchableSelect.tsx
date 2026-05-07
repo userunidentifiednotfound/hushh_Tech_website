@@ -43,6 +43,7 @@ export function SearchableSelect({
 }: SearchableSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState('');
+  const [activeIndex, setActiveIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const listboxId = `${id}-listbox`;
@@ -54,6 +55,9 @@ export function SearchableSelect({
   const filtered = search.trim()
     ? options.filter((option) => option.label.toLowerCase().includes(search.toLowerCase()))
     : options;
+  const visibleOptions = filtered.slice(0, 50);
+  const activeOption = activeIndex >= 0 ? visibleOptions[activeIndex] : undefined;
+  const activeOptionId = activeOption ? `${id}-option-${activeOption.value}` : undefined;
 
   // Close dropdown when clicking outside.
   useEffect(() => {
@@ -61,6 +65,7 @@ export function SearchableSelect({
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         setIsOpen(false);
         setSearch('');
+        setActiveIndex(-1);
       }
     };
 
@@ -73,6 +78,7 @@ export function SearchableSelect({
       onChange(optionValue);
       setIsOpen(false);
       setSearch('');
+      setActiveIndex(-1);
       inputRef.current?.blur();
     },
     [onChange],
@@ -80,6 +86,7 @@ export function SearchableSelect({
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
+    setActiveIndex(0);
     if (!isOpen) {
       setIsOpen(true);
     }
@@ -88,28 +95,97 @@ export function SearchableSelect({
   const handleInputFocus = () => {
     setIsOpen(true);
     setSearch('');
+    setActiveIndex(value ? Math.max(options.findIndex((option) => option.value === value), 0) : 0);
   };
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === 'Escape') {
       setIsOpen(false);
       setSearch('');
+      setActiveIndex(-1);
       inputRef.current?.blur();
       return;
     }
 
-    // Allow submitting a custom value on Enter.
-    if (event.key === 'Enter' && search.trim()) {
+    if (event.key === 'ArrowDown') {
       event.preventDefault();
-      if (filtered.length > 0) {
-        handleSelect(filtered[0].value);
-      } else {
+      if (!isOpen) {
+        setIsOpen(true);
+      }
+      setActiveIndex((current) => Math.min(current + 1, visibleOptions.length - 1));
+      return;
+    }
+
+    if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      if (!isOpen) {
+        setIsOpen(true);
+      }
+      setActiveIndex((current) => Math.max(current <= 0 ? visibleOptions.length - 1 : current - 1, 0));
+      return;
+    }
+
+    if (event.key === 'Home' && isOpen && visibleOptions.length > 0) {
+      event.preventDefault();
+      setActiveIndex(0);
+      return;
+    }
+
+    if (event.key === 'End' && isOpen && visibleOptions.length > 0) {
+      event.preventDefault();
+      setActiveIndex(visibleOptions.length - 1);
+      return;
+    }
+
+    if (event.key === 'Tab') {
+      setIsOpen(false);
+      setSearch('');
+      setActiveIndex(-1);
+      return;
+    }
+
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      if (isOpen && activeOption) {
+        handleSelect(activeOption.value);
+      } else if (search.trim() && visibleOptions.length > 0) {
+        handleSelect(visibleOptions[0].value);
+      } else if (search.trim()) {
         onChange(search.trim());
         setIsOpen(false);
         setSearch('');
+        setActiveIndex(-1);
+      } else if (!isOpen) {
+        setIsOpen(true);
+        setActiveIndex(0);
       }
     }
   };
+
+  useEffect(() => {
+    if (!isOpen) {
+      setActiveIndex(-1);
+      return;
+    }
+
+    if (visibleOptions.length === 0) {
+      setActiveIndex(-1);
+      return;
+    }
+
+    setActiveIndex((current) => {
+      if (current < 0) return 0;
+      return Math.min(current, visibleOptions.length - 1);
+    });
+  }, [isOpen, visibleOptions.length]);
+
+  useEffect(() => {
+    if (!activeOptionId) return;
+
+    document.getElementById(activeOptionId)?.scrollIntoView({
+      block: 'nearest',
+    });
+  }, [activeOptionId]);
 
   if (loading) {
     return (
@@ -178,6 +254,7 @@ export function SearchableSelect({
           aria-expanded={isOpen}
           aria-haspopup="listbox"
           aria-controls={listboxId}
+          aria-activedescendant={activeOptionId}
           role="combobox"
           className={`h-12 w-full rounded-xl border bg-white px-4 pr-10 text-base text-slate-900 placeholder:text-slate-400 transition-all focus:border-[#2b8cee] focus:outline-none focus:ring-2 focus:ring-[#2b8cee]/20 ${
             disabled ? 'cursor-not-allowed border-slate-200 bg-slate-50 text-slate-400' : 'border-slate-200'
@@ -219,21 +296,30 @@ export function SearchableSelect({
               )}
             </li>
           ) : (
-            filtered.slice(0, 50).map((option) => (
+            visibleOptions.map((option, index) => {
+              const isActive = index === activeIndex;
+              const isSelected = option.value === value;
+
+              return (
               <li
                 key={option.value}
+                id={`${id}-option-${option.value}`}
                 role="option"
-                aria-selected={option.value === value}
+                aria-selected={isSelected}
                 onClick={() => handleSelect(option.value)}
+                onMouseEnter={() => setActiveIndex(index)}
                 className={`cursor-pointer px-4 py-3 text-sm transition-colors ${
-                  option.value === value
+                  isSelected
                     ? 'bg-[#2b8cee]/10 font-semibold text-[#2b8cee]'
+                    : isActive
+                    ? 'bg-slate-100 text-slate-900'
                     : 'text-slate-900 hover:bg-slate-50 active:bg-slate-100'
                 }`}
               >
                 {option.label}
               </li>
-            ))
+              );
+            })
           )}
 
           {filtered.length > 50 && (

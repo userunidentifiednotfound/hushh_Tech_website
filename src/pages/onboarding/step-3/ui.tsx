@@ -4,6 +4,7 @@
  * Single page merging country/residence detection + full address entry.
  * GPS fires ONCE → auto-fills citizenship, residence, address, city, state, zip.
  */
+import { useRef } from "react";
 import {
   useCombinedLocationLogic,
   countries,
@@ -15,11 +16,21 @@ import HushhTechCta, {
   HushhTechCtaVariant,
 } from "../../../components/hushh-tech-cta/HushhTechCta";
 import PermissionHelpModal from "../../../components/PermissionHelpModal";
+import { useModalKeyboardNavigation } from "../../../hooks/useModalKeyboardNavigation";
 
 const DISPLAY_STEP = 3;
 
 export default function OnboardingStep3Combined() {
   const s = useCombinedLocationLogic();
+  const locationModalRef = useRef<HTMLDivElement>(null);
+  const allowLocationButtonRef = useRef<HTMLButtonElement>(null);
+
+  useModalKeyboardNavigation({
+    isOpen: s.showLocationModal,
+    containerRef: locationModalRef,
+    initialFocusRef: allowLocationButtonRef,
+    onClose: s.handleDontAllow,
+  });
 
   return (
     <div className="bg-white text-gray-900 min-h-screen antialiased flex flex-col selection:bg-hushh-blue selection:text-white relative overflow-hidden">
@@ -460,7 +471,14 @@ export default function OnboardingStep3Combined() {
         <>
           <div className="fixed inset-0 z-40 bg-white/60 backdrop-blur-sm" />
           <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center px-4 pb-6 sm:pb-0">
-            <div className="relative w-full max-w-sm bg-white rounded-3xl shadow-[0_20px_40px_-10px_rgba(0,0,0,0.08),0_0_1px_rgba(0,0,0,0.04)] p-8 flex flex-col items-center text-center border border-gray-100/50">
+            <div
+              ref={locationModalRef}
+              className="relative w-full max-w-sm bg-white rounded-3xl shadow-[0_20px_40px_-10px_rgba(0,0,0,0.08),0_0_1px_rgba(0,0,0,0.04)] p-8 flex flex-col items-center text-center border border-gray-100/50"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="step3-location-modal-title"
+              tabIndex={-1}
+            >
               <div className="mb-8">
                 <div className="w-20 h-20 rounded-full border border-gray-200 bg-white flex items-center justify-center shadow-sm">
                   <span
@@ -473,6 +491,7 @@ export default function OnboardingStep3Combined() {
               </div>
               <div className="space-y-4 mb-10 px-2">
                 <h2
+                  id="step3-location-modal-title"
                   className="text-[1.75rem] leading-[1.2] text-black tracking-tight font-serif"
                   style={{ fontFamily: "'Playfair Display', serif" }}
                 >
@@ -485,6 +504,7 @@ export default function OnboardingStep3Combined() {
               </div>
               <div className="w-full space-y-4">
                 <button
+                  ref={allowLocationButtonRef}
                   onClick={s.handleAllowLocation}
                   className="w-full h-12 bg-hushh-blue text-white font-medium text-[0.8rem] flex items-center justify-center shadow-lg hover:shadow-xl transition-all active:scale-[0.99] border border-hushh-blue rounded-2xl hover:bg-hushh-blue/90"
                 >

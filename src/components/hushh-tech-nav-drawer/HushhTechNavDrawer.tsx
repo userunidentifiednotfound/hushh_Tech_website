@@ -3,10 +3,11 @@
  * Apple iOS colors, proper English capitalization, hushh-blue accents.
  * Slides in from right, covers entire viewport.
  */
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import hushhLogo from "../images/Hushhogo.png";
 import { useAuthSession } from "../../auth/AuthSessionProvider";
+import { useModalKeyboardNavigation } from "../../hooks/useModalKeyboardNavigation";
 
 interface NavItem {
   icon: string;
@@ -49,6 +50,15 @@ const HushhTechNavDrawer: React.FC<HushhTechNavDrawerProps> = ({
   const navigate = useNavigate();
   const { status, signOut } = useAuthSession();
   const isAuthenticated = status === "authenticated";
+  const drawerRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  useModalKeyboardNavigation({
+    isOpen,
+    containerRef: drawerRef,
+    initialFocusRef: closeButtonRef,
+    onClose,
+  });
 
   /* Lock body scroll when drawer is open */
   useEffect(() => {
@@ -76,7 +86,14 @@ const HushhTechNavDrawer: React.FC<HushhTechNavDrawerProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] bg-white flex flex-col selection:bg-hushh-blue selection:text-white">
+    <div
+      ref={drawerRef}
+      className="fixed inset-0 z-[100] bg-white flex flex-col selection:bg-hushh-blue selection:text-white"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Navigation menu"
+      tabIndex={-1}
+    >
       {/* ── Header ── */}
       <div className="px-6 py-6 flex justify-between items-center">
         <div className="flex items-center gap-4">
@@ -88,6 +105,7 @@ const HushhTechNavDrawer: React.FC<HushhTechNavDrawerProps> = ({
           </span>
         </div>
         <button
+          ref={closeButtonRef}
           onClick={onClose}
           className="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center hover:bg-gray-50 transition-colors"
           aria-label="Close menu"

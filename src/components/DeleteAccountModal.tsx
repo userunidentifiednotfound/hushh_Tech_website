@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useToast } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import config from "../resources/config/config";
 import { useAuthSession } from "../auth/AuthSessionProvider";
+import { useModalKeyboardNavigation } from "../hooks/useModalKeyboardNavigation";
 
 interface DeleteAccountModalProps {
   isOpen: boolean;
@@ -25,6 +26,8 @@ const DeleteAccountModal = ({
   const { session, revalidateSession, handleAccountDeleted } = useAuthSession();
   const [confirmText, setConfirmText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const confirmInputRef = useRef<HTMLInputElement>(null);
 
   const isDeleteEnabled = confirmText.toUpperCase() === "DELETE";
 
@@ -119,6 +122,13 @@ const DeleteAccountModal = ({
     onClose();
   };
 
+  useModalKeyboardNavigation({
+    isOpen,
+    containerRef: modalRef,
+    initialFocusRef: confirmInputRef,
+    onClose: handleClose,
+  });
+
   if (!isOpen) return null;
 
   // =====================================================
@@ -135,8 +145,13 @@ const DeleteAccountModal = ({
       {/* ── Modal card — bottom-sheet on mobile, centered on desktop ── */}
       <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center px-4 pb-6 sm:pb-0">
         <div
+          ref={modalRef}
           className="relative w-full max-w-sm bg-white rounded-3xl shadow-[0_20px_40px_-10px_rgba(0,0,0,0.08),0_0_1px_rgba(0,0,0,0.04)] p-8 flex flex-col items-center text-center border border-gray-100/50"
           onClick={(e) => e.stopPropagation()}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="delete-account-title"
+          tabIndex={-1}
         >
           {/* ── Warning icon in circle ── */}
           <div className="mb-8">
@@ -153,6 +168,7 @@ const DeleteAccountModal = ({
           {/* ── Heading & description ── */}
           <div className="space-y-4 mb-8 px-2">
             <h2
+              id="delete-account-title"
               className="text-[1.75rem] leading-[1.2] text-black lowercase tracking-tight"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
@@ -171,6 +187,7 @@ const DeleteAccountModal = ({
               type DELETE to confirm
             </p>
             <input
+              ref={confirmInputRef}
               type="text"
               value={confirmText}
               onChange={(e) => setConfirmText(e.target.value.toUpperCase())}
