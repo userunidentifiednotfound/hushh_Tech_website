@@ -121,7 +121,7 @@ export default function Philosophy() {
         </p>
         <div className="flex justify-center">
           <a  href="https://www.linkedin.com/in/manishsainani/"  target="_blank"
-  rel="noopener noreferrer" className="text-red-600 hover:text-red-700 flex items-center">
+  rel="noopener noreferrer" className="text-red-600 hover:text-red-700 flex items-center transition-colors duration-200">
           </a>
         </div>
       </section>
