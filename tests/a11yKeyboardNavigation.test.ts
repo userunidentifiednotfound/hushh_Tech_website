@@ -77,6 +77,59 @@ function ModalHarness() {
   );
 }
 
+function RerenderingModalHarness() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [count, setCount] = useState(0);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const firstButtonRef = useRef<HTMLButtonElement>(null);
+
+  useModalKeyboardNavigation({
+    isOpen,
+    containerRef: modalRef,
+    initialFocusRef: firstButtonRef,
+    onClose: () => setIsOpen(false),
+  });
+
+  return React.createElement(
+    React.Fragment,
+    null,
+    React.createElement(
+      "button",
+      {
+        type: "button",
+        onClick: () => setIsOpen(true),
+      },
+      "Open modal",
+    ),
+    isOpen
+      ? React.createElement(
+          "div",
+          {
+            ref: modalRef,
+            role: "dialog",
+            tabIndex: -1,
+          },
+          React.createElement(
+            "button",
+            {
+              ref: firstButtonRef,
+              type: "button",
+            },
+            "First action",
+          ),
+          React.createElement(
+            "button",
+            {
+              type: "button",
+              onClick: () => setCount((value) => value + 1),
+            },
+            `Rerender ${count}`,
+          ),
+        )
+      : null,
+  );
+}
+
 describe("keyboard accessibility helpers", () => {
   let container: HTMLDivElement;
   let root: Root;
@@ -226,6 +279,39 @@ describe("keyboard accessibility helpers", () => {
     const buttons = Array.from(container.querySelectorAll("div[role='dialog'] button"));
     expect(document.activeElement).toBe(buttons[0]);
     outsideButton.remove();
+  });
+
+  it("keeps focus stable inside an open modal across re-renders", async () => {
+    await act(async () => {
+      root.render(React.createElement(RerenderingModalHarness));
+    });
+
+    const trigger = container.querySelector("button");
+    trigger?.focus();
+
+    await act(async () => {
+      trigger?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+
+    await act(async () => {
+      vi.runOnlyPendingTimers();
+    });
+
+    const buttons = Array.from(container.querySelectorAll("div[role='dialog'] button"));
+    expect(buttons).toHaveLength(2);
+    expect(document.activeElement).toBe(buttons[0]);
+
+    buttons[1].focus();
+
+    await act(async () => {
+      buttons[1].dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+
+    await act(async () => {
+      vi.runOnlyPendingTimers();
+    });
+
+    expect(document.activeElement).toBe(buttons[1]);
   });
 
   it("opens the language menu with the keyboard and supports arrow navigation", async () => {

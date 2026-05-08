@@ -1,4 +1,4 @@
-import { useEffect, type RefObject } from 'react';
+import { useEffect, useRef, type RefObject } from 'react';
 
 import { getFocusableElements } from '../utils/keyboardNavigation';
 
@@ -17,6 +17,16 @@ export function useModalKeyboardNavigation({
   initialFocusRef,
   restoreFocus = true,
 }: UseModalKeyboardNavigationArgs) {
+  const onCloseRef = useRef(onClose);
+  const initialFocusRefRef = useRef(initialFocusRef);
+  const restoreFocusRef = useRef(restoreFocus);
+
+  useEffect(() => {
+    onCloseRef.current = onClose;
+    initialFocusRefRef.current = initialFocusRef;
+    restoreFocusRef.current = restoreFocus;
+  }, [initialFocusRef, onClose, restoreFocus]);
+
   useEffect(() => {
     if (!isOpen) return;
 
@@ -25,14 +35,17 @@ export function useModalKeyboardNavigation({
       : null;
 
     const focusInitialElement = () => {
-      const target = initialFocusRef?.current || getFocusableElements(containerRef.current)[0] || containerRef.current;
+      const target =
+        initialFocusRefRef.current?.current ||
+        getFocusableElements(containerRef.current)[0] ||
+        containerRef.current;
       target?.focus({ preventScroll: true });
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && onClose) {
+      if (event.key === 'Escape' && onCloseRef.current) {
         event.preventDefault();
-        onClose();
+        onCloseRef.current();
         return;
       }
 
@@ -66,14 +79,15 @@ export function useModalKeyboardNavigation({
       }
     };
 
-    window.setTimeout(focusInitialElement, 0);
+    const focusTimer = window.setTimeout(focusInitialElement, 0);
     document.addEventListener('keydown', handleKeyDown);
 
     return () => {
+      window.clearTimeout(focusTimer);
       document.removeEventListener('keydown', handleKeyDown);
-      if (restoreFocus && previousActiveElement?.isConnected) {
+      if (restoreFocusRef.current && previousActiveElement?.isConnected) {
         previousActiveElement.focus({ preventScroll: true });
       }
     };
-  }, [containerRef, initialFocusRef, isOpen, onClose, restoreFocus]);
+  }, [containerRef, isOpen]);
 }
