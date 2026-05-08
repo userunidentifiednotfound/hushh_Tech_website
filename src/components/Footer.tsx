@@ -56,7 +56,7 @@ export default function Footer() {
                 Mon-Fri: 9AM-6PM PST
               </p>
             </div>
-            <div className="bg-[#135bec]/20 p-2 rounded-full">
+            <div className="bg-[#135bec]/20 p-2 rounded-full hover:bg-[#135bec]/30 transition-colors duration-200">
               <FaPhone className="text-[#135bec]" />
             </div>
           </div>
