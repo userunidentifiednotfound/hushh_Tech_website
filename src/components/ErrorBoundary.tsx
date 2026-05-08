@@ -65,6 +65,7 @@ class ErrorBoundary extends Component<Props, State> {
             <button
               onClick={() => window.location.reload()}
               className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              aria-label="Refresh page to recover from error"
             >
               Refresh Page
             </button>
