@@ -9,6 +9,7 @@ import DeleteAccountModal from "./DeleteAccountModal";
 import { useStockQuotes, StockQuote, STOCK_LOGOS } from "../hooks/useStockQuotes";
 import config from "../resources/config/config";
 import { useAuthSession } from "../auth/AuthSessionProvider";
+import { SkipToContentLink } from "./ui/SkipToContentLink";
 
 const WELCOME_TOAST_PENDING_KEY = "showWelcomeToast";
 const WELCOME_TOAST_USER_KEY = "showWelcomeToastUserId";
@@ -209,6 +210,8 @@ export default function Navbar() {
 
   return (
     <>
+      <SkipToContentLink />
+
       {/* Fixed Header with Navigation + Ticker - Light Theme */}
       <header className="fixed w-full z-[999] top-0">
         {/* Main Navigation Bar - Soft Light Background */}
@@ -238,6 +241,7 @@ export default function Navbar() {
                 <button
                   key={path}
                   onClick={() => handleLinkClick(path)}
+                  aria-current={active ? "page" : undefined}
                   className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
                     active
                       ? 'bg-[#2F80ED]/10 text-[#1f6cc7]'
@@ -377,6 +381,7 @@ export default function Navbar() {
                   <button
                     key={path}
                     onClick={() => handleLinkClick(path)}
+                    aria-current={isActive(path) ? "page" : undefined}
                     className="flex items-center w-full min-h-[44px] py-2.5 pr-4 pl-4 active:bg-[#E5E5EA] transition-colors relative"
                   >
                     <div
@@ -408,6 +413,7 @@ export default function Navbar() {
                   <button
                     key={path}
                     onClick={() => handleLinkClick(path)}
+                    aria-current={isActive(path) ? "page" : undefined}
                     className="flex items-center w-full min-h-[44px] py-2.5 pr-4 pl-4 active:bg-[#E5E5EA] transition-colors relative"
                   >
                     <div
