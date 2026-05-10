@@ -17,7 +17,13 @@ body {
   font-weight: 400;
   line-height: 1.5;
 }
+html {
+  scroll-behavior: smooth;
+}
 
+body {
+  overflow-x: hidden;
+}
 /*
  * Headings — no forced font-family here.
  * Tailwind classes (font-serif / font-sans) control the font per element.

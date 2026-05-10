@@ -11,6 +11,7 @@ import Contact from './pages/Contact';
 import ScrollToTop from './components/ScrollToTop';
 import OnboardingShellAutoPadding from './components/OnboardingShellAutoPadding';
 import { ChakraProvider } from '@chakra-ui/react';
+import ScrollProgress from "./components/ScrollProgress";
 import theme from './theme';
 import Consumers from './pages/services/consumers';
 import Business from './pages/services/business';
@@ -402,6 +403,7 @@ function App() {
         <Router>
           <GoogleAnalyticsRouteTracker />
           <ScrollToTop />
+          <ScrollProgress />
           <OnboardingShellAutoPadding />
           <GlobalNDAGate>
             <AppLayout />
