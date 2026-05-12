@@ -6,6 +6,8 @@ import HushhTechFooter, {
 import HushhTechCta, {
   HushhTechCtaVariant,
 } from "../../components/hushh-tech-cta/HushhTechCta";
+import ArrowForwardIcon from "../../components/svg/ArrowForwardIcon";
+
 
 const playfair = { fontFamily: "'Playfair Display', serif" };
 
@@ -41,9 +43,8 @@ export default function HomePage() {
                   variant={HushhTechCtaVariant.BLACK}
                 >
                   {primaryCTA.text}
-                  <span className="material-symbols-outlined thin-icon text-lg">
-                    arrow_forward
-                  </span>
+                  <ArrowForwardIcon className="thin-icon text-lg" />
+
                 </HushhTechCta>
                 <HushhTechCta
                   onClick={() => onNavigate("/discover-fund-a")}
