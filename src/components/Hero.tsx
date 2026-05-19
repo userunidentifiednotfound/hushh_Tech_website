@@ -453,7 +453,7 @@ export default function Hero() {
                   18–23%
                 </Text>
               </Box>
-              <Box bg="rgba(0,122,255,0.08)" color={IOS.blue} px={3} py={1}
+              <Box bg="rgba(0,122,255,0.08)" color="white" px={3} py={1}
                 borderRadius="full" fontSize="12px" fontWeight="600"
               >
                 High Growth
