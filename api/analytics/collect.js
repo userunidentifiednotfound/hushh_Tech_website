@@ -1,6 +1,6 @@
 import { createHash, randomUUID } from "node:crypto";
 
-import { createClient } from "@supabase/supabase-js";
+import { createSupabaseServerClient } from "../shared/supabaseServerClient.js";
 
 const MAX_CONTENT_LENGTH_BYTES = 64 * 1024;
 const MAX_EVENTS_PER_REQUEST = 50;
@@ -118,12 +118,7 @@ function getAnalyticsHashSalt(env = process.env) {
 function createAdminClient(env = process.env) {
   const { supabaseUrl, serviceRoleKey } = getSupabaseConfig(env);
 
-  return createClient(supabaseUrl, serviceRoleKey, {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false,
-    },
-  });
+  return createSupabaseServerClient(supabaseUrl, serviceRoleKey);
 }
 
 function getBearerToken(req) {

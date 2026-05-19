@@ -1,4 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useState,
+  type AnchorHTMLAttributes,
+  type ReactNode,
+} from "react";
 import { Helmet } from "react-helmet";
 import {
   Bar,
@@ -149,6 +155,38 @@ function buildLookerStudioLink(rawUrl?: string) {
   }
 }
 
+export function AnalyticsToolbar({ children }: { children: ReactNode }) {
+  return (
+    <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:justify-end">
+      {children}
+    </div>
+  );
+}
+
+export function AnalyticsToolbarLink({
+  className = "",
+  children,
+  ...props
+}: AnchorHTMLAttributes<HTMLAnchorElement>) {
+  const classes = [
+    "inline-flex min-h-10 w-full items-center justify-center whitespace-nowrap",
+    "rounded-full border border-black bg-black px-5 py-2 text-sm font-medium leading-none text-white",
+    "transition hover:bg-transparent hover:text-black sm:w-auto",
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  return (
+    <a
+      {...props}
+      className={classes}
+    >
+      {children}
+    </a>
+  );
+}
+
 export function MetricCard({
   eyebrow,
   label,
@@ -165,21 +203,24 @@ export function MetricCard({
   return (
     <div
       className={`rounded-[1.6rem] border border-gray-200 bg-white px-5 py-5 shadow-sm ${className}`.trim()}
+      data-testid="metric-card"
     >
       <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-gray-500">
         {eyebrow}
       </p>
-      <h3
-        className="mt-3 text-[28px] font-semibold tracking-tight text-black"
-        aria-label={`${label}: ${value}`}
-      >
-        {value}
-      </h3>
-      <p className="mt-2 text-sm font-medium text-gray-700" aria-hidden="true">
-        {label}
-      </p>
+      <div className="mt-4 space-y-1.5" data-testid="metric-label-value-stack">
+        <p className="text-sm font-medium leading-5 text-gray-700" aria-hidden="true">
+          {label}
+        </p>
+        <h3
+          className="text-[28px] font-semibold leading-none tracking-tight text-black"
+          aria-label={`${label}: ${value}`}
+        >
+          {value}
+        </h3>
+      </div>
       {hint ? (
-        <p className="mt-1 text-sm leading-6 text-gray-500">{hint}</p>
+        <p className="mt-3 text-sm leading-6 text-gray-500">{hint}</p>
       ) : null}
     </div>
   );
@@ -222,6 +263,26 @@ function SummaryCell({
   );
 }
 
+export function DashboardStatusBadge({
+  label,
+  value,
+  className,
+}: {
+  label: string;
+  value: string;
+  className: string;
+}) {
+  return (
+    <span
+      role="status"
+      aria-label={`${label}: ${value}`}
+      className={`inline-flex items-center justify-center rounded-full px-3 py-1 text-[10px] font-semibold uppercase leading-none ${className}`.trim()}
+    >
+      {value}
+    </span>
+  );
+}
+
 function SearchPerformanceList({
   title,
   rows,
@@ -231,12 +292,28 @@ function SearchPerformanceList({
   rows: Array<Record<string, unknown>>;
   labelKey: string;
 }) {
+  const headingId = `analytics-filter-${title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")}`;
+
   return (
-    <div className="rounded-[1.4rem] border border-[#e8dfcb] bg-white px-4 py-4">
-      <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#244d86]">
+    <section
+      aria-labelledby={headingId}
+      className="rounded-[1.4rem] border border-[#e8dfcb] bg-white px-4 py-4"
+      data-testid="analytics-filter-control"
+    >
+      <p
+        id={headingId}
+        className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#244d86]"
+      >
         {title}
       </p>
-      <div className="mt-3 space-y-3">
+      <div
+        aria-label={`${title} analytics filter results`}
+        className="mt-3 space-y-3"
+        role="list"
+      >
         {rows.length > 0 ? (
           rows.slice(0, 5).map((row, index) => {
             const hasSearchMetrics = "clicks" in row || "impressions" in row;
@@ -247,6 +324,7 @@ function SearchPerformanceList({
               <div
                 key={`${title}-${index}`}
                 className="flex items-start justify-between gap-4 border-b border-gray-100 pb-2 last:border-b-0 last:pb-0"
+                role="listitem"
               >
                 <p className="min-w-0 flex-1 truncate text-sm font-medium text-black">
                   {String(row[labelKey] || "Unknown")}
@@ -265,10 +343,12 @@ function SearchPerformanceList({
             );
           })
         ) : (
-          <p className="text-sm leading-6 text-gray-500">No public-safe rows yet.</p>
+          <p className="text-sm leading-6 text-gray-500" role="listitem">
+            No public-safe rows yet.
+          </p>
         )}
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -597,8 +677,10 @@ export default function MetricsPage() {
                     From signup to confirmation
                   </h2>
                 </div>
-                <span
-                  className={`rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] ${
+                <DashboardStatusBadge
+                  label="Funnel stack status"
+                  value={statusLabel}
+                  className={`tracking-[0.2em] ${
                     statusLabel === "Issue"
                       ? "bg-red-400/20 text-red-200"
                       : statusLabel === "Cached"
@@ -607,9 +689,7 @@ export default function MetricsPage() {
                           ? "bg-white/10 text-white/70"
                           : "bg-emerald-400/15 text-emerald-200"
                   }`}
-                >
-                  {statusLabel}
-                </span>
+                />
               </div>
 
               <div className="mt-6 space-y-4">
@@ -965,7 +1045,7 @@ export default function MetricsPage() {
           </section>
 
           <section className="rounded-[2rem] border border-[#e8dfcb] bg-[#fffaf0] p-6 shadow-sm">
-            <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+            <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
               <div>
                 <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#244d86]">
                   Traffic context
@@ -976,14 +1056,15 @@ export default function MetricsPage() {
               </div>
 
               {lookerStudioLink && (
-                <a
-                  href={lookerStudioLink}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center justify-center rounded-full border border-black bg-black px-5 py-2 text-sm font-medium text-white transition hover:bg-transparent hover:text-black"
-                >
-                  Open Looker traffic view
-                </a>
+                <AnalyticsToolbar>
+                  <AnalyticsToolbarLink
+                    href={lookerStudioLink}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Open Looker traffic view
+                  </AnalyticsToolbarLink>
+                </AnalyticsToolbar>
                 )}
             </div>
 
@@ -1217,9 +1298,11 @@ export default function MetricsPage() {
                       Separate hushh-api flow
                     </h2>
                   </div>
-                  <div className="rounded-full border border-[#e8dfcb] bg-[#faf5ea] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#6f684f]">
-                    Not merged
-                  </div>
+                  <DashboardStatusBadge
+                    label="Legacy appendix status"
+                    value="Not merged"
+                    className="border border-[#e8dfcb] bg-[#faf5ea] tracking-[0.18em] text-[#6f684f]"
+                  />
                 </div>
 
                 <div className="mt-6 rounded-2xl border border-[#ece4d2] bg-[#faf5ea] px-4 py-4">
@@ -1250,9 +1333,11 @@ export default function MetricsPage() {
                         Runtime warnings
                       </h2>
                     </div>
-                    <div className="rounded-full border border-amber-200 bg-white/70 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-amber-800">
-                      {warnings.length} note{warnings.length === 1 ? "" : "s"}
-                    </div>
+                    <DashboardStatusBadge
+                      label="Audit notes status"
+                      value={`${warnings.length} note${warnings.length === 1 ? "" : "s"}`}
+                      className="border border-amber-200 bg-white/70 tracking-[0.18em] text-amber-800"
+                    />
                   </div>
 
                   <div className="mt-5 grid gap-3">

@@ -5,9 +5,11 @@
 
 import React from 'react';
 import { Box, Flex, Text, Icon } from '@chakra-ui/react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { FiHome, FiTrendingUp, FiUsers, FiUser } from 'react-icons/fi';
 import { motion } from 'framer-motion';
+
+const MotionLink = motion(Link);
 
 interface NavItem {
   id: string;
@@ -98,7 +100,6 @@ const itemVariants = {
 const MotionBox = motion(Box);
 
 const MobileBottomNav: React.FC = () => {
-  const navigate = useNavigate();
   const location = useLocation();
 
   // Check if current page should hide the nav
@@ -169,6 +170,8 @@ const MobileBottomNav: React.FC = () => {
           const active = checkIsActive(item);
           return (
             <Flex
+              as={MotionLink}
+              to={item.path}
               key={item.id}
               direction="column"
               align="center"
@@ -177,14 +180,16 @@ const MobileBottomNav: React.FC = () => {
               p="2"
               flex="1"
               h="100%"
-              cursor="pointer"
-              onClick={() => navigate(item.path)}
               transition="all 0.2s ease"
-              role="group"
+              role="link"
               aria-current={active ? 'page' : undefined}
               _active={{ transform: 'scale(0.95)' }}
+              _focusVisible={{
+                outline: 'none',
+                bg: 'rgba(47, 128, 237, 0.05)',
+                borderRadius: 'lg',
+              }}
               // Framer Motion item variants for staggered entrance
-              as={motion.div}
               variants={itemVariants}
             >
               {/* Icon Container - Blue circle when active */}

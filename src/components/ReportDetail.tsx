@@ -64,7 +64,7 @@ const ReportDetail: React.FC<ReportDetailProps> = ({ report, isLoading }) => {
               <img
                 key={i}
                 src={src}
-                alt={`Chart ${i + 1}`}
+                alt={`${report.title || 'Report'} — chart ${i + 1}`}
                 style={{
                   width: '100%',
                   height: '400px',
@@ -85,7 +85,13 @@ const ReportDetail: React.FC<ReportDetailProps> = ({ report, isLoading }) => {
           <SimpleGrid columns={{ base: 1, md: report.public_video_urls.length > 1 ? 2 : 1 }} spacing={4}>
             {report.video_urls.map((src, i) => (
               <AspectRatio key={i} ratio={16 / 9} borderRadius="md" overflow="hidden">
-                <video src={src} controls style={{ width: '100%', height: '100%' }} />
+                <video
+                  src={src}
+                  controls
+                  title={`${report.title || 'Report'} — video ${i + 1}`}
+                  aria-label={`${report.title || 'Report'} — related video ${i + 1}`}
+                  style={{ width: '100%', height: '100%' }}
+                />
               </AspectRatio>
             ))}
           </SimpleGrid>

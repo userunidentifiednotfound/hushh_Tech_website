@@ -9,6 +9,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  Stack,
   Text,
   useBreakpointValue,
   VStack,
@@ -578,10 +579,19 @@ export default function WalletCardPreviewModal({
             </VStack>
 
             {/* Wallet actions */}
-            <VStack spacing={3} align="stretch" pt={1}>
+            <Stack
+              data-testid="wallet-preview-actions"
+              direction={{ base: "column", md: "row" }}
+              spacing={3}
+              align="stretch"
+              pt={1}
+            >
               {appleWalletSupported ? (
                 <Button
                   leftIcon={<FaApple />}
+                  flex={1}
+                  w="100%"
+                  minW={0}
                   bg="#0B1120"
                   color="white"
                   borderRadius="full"
@@ -597,14 +607,26 @@ export default function WalletCardPreviewModal({
                   Add to Apple Wallet
                 </Button>
               ) : (
-                <Text fontSize="xs" color="gray.500">
-                  {modalAppleSupportMessage}
-                </Text>
+                <Box
+                  flex={1}
+                  minH="52px"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent={{ base: "flex-start", md: "center" }}
+                  px={{ base: 0, md: 4 }}
+                >
+                  <Text fontSize="xs" color="gray.500" textAlign={{ base: "left", md: "center" }}>
+                    {modalAppleSupportMessage}
+                  </Text>
+                </Box>
               )}
 
               {googleWalletAvailable ? (
                 <Button
                   leftIcon={<FcGoogle />}
+                  flex={1}
+                  w="100%"
+                  minW={0}
                   bg="white"
                   color="gray.900"
                   border="1px solid"
@@ -622,11 +644,20 @@ export default function WalletCardPreviewModal({
                   Add to Google Wallet
                 </Button>
               ) : (
-                <Text fontSize="xs" color="gray.500">
-                  {modalGoogleSupportMessage}
-                </Text>
+                <Box
+                  flex={1}
+                  minH="52px"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent={{ base: "flex-start", md: "center" }}
+                  px={{ base: 0, md: 4 }}
+                >
+                  <Text fontSize="xs" color="gray.500" textAlign={{ base: "left", md: "center" }}>
+                    {modalGoogleSupportMessage}
+                  </Text>
+                </Box>
               )}
-            </VStack>
+            </Stack>
           </VStack>
         </ModalBody>
       </ModalContent>

@@ -1,8 +1,34 @@
-import React from "react";
+import { Link } from "react-router-dom";
 import img from "../../files/img.png";
 import img2 from "../../files/img (1).png";
-import { Box, Container, Heading, Text, SimpleGrid, Flex, Image, VStack, HStack, Icon } from "@chakra-ui/react";
-import { FaCheckCircle } from "react-icons/fa";
+import { Box, Container, Heading, Text, SimpleGrid, Flex, Image } from "@chakra-ui/react";
+
+const ctaFocusVisible = {
+  _focusVisible: {
+    outline: "none",
+    boxShadow: "0 0 0 3px rgba(0, 169, 224, 0.45)",
+  },
+};
+
+const portraitBoxSize = { base: "128px", md: "150px" };
+const portraitFrameProps = {
+  boxSize: portraitBoxSize,
+  aspectRatio: "1 / 1",
+  borderRadius: "full",
+  overflow: "hidden",
+  mx: "auto",
+  mb: 6,
+  border: "3px solid #0891B2",
+  flexShrink: 0,
+};
+const portraitImageProps = {
+  boxSize: "100%",
+  width: "100%",
+  height: "100%",
+  objectFit: "cover" as const,
+  objectPosition: "center top",
+  display: "block",
+};
 
 export default function Leadership() {
   return (
@@ -176,26 +202,28 @@ export default function Leadership() {
             At Hushh Technologies LLC, our leadership team combines expertise in technology, finance, and strategy to redefine wealth creation.
           </Text>
           
-          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
+          <SimpleGrid
+            data-testid="leadership-card-grid"
+            columns={{ base: 1, lg: 2 }}
+            spacing={{ base: 6, md: 8, lg: 10 }}
+            maxW="5xl"
+            mx="auto"
+            w="full"
+          >
             {/* Manish Sainani */}
             <Box 
+              data-testid="leadership-card"
               bg="white" 
-              p={8} 
+              p={{ base: 6, md: 8 }}
               borderRadius="lg" 
               boxShadow="md"
               textAlign="center"
               transition="transform 0.3s ease"
+              minW={0}
               _hover={{ transform: "translateY(-5px)" }}
             >
-              <Box 
-                boxSize={{ base: "128px", md: "150px" }}
-                borderRadius="full" 
-                overflow="hidden" 
-                mx="auto" 
-                mb={6}
-                border="3px solid #0891B2"
-              >
-                <Image src={img} alt="Manish Sainani" boxSize="full" objectFit="cover" display="block" />
+              <Box {...portraitFrameProps}>
+                <Image src={img} alt="Manish Sainani" {...portraitImageProps} />
               </Box>
               
               <Heading as="h3" fontSize="2xl" mb={2}>
@@ -215,23 +243,18 @@ export default function Leadership() {
 
             {/* Justin Donaldson */}
             <Box 
+              data-testid="leadership-card"
               bg="white" 
-              p={8} 
+              p={{ base: 6, md: 8 }}
               borderRadius="lg" 
               boxShadow="md"
               textAlign="center"
               transition="transform 0.3s ease"
+              minW={0}
               _hover={{ transform: "translateY(-5px)" }}
             >
-              <Box 
-                boxSize={{ base: "128px", md: "150px" }}
-                borderRadius="full" 
-                overflow="hidden" 
-                mx="auto" 
-                mb={6}
-                border="3px solid #0891B2"
-              >
-                <Image src={img2} alt="Justin Donaldson" boxSize="full" objectFit="cover" display="block" />
+              <Box {...portraitFrameProps}>
+                <Image src={img2} alt="Justin Donaldson" {...portraitImageProps} />
               </Box>
               
               <Heading as="h3" fontSize="2xl" mb={2}>
@@ -260,7 +283,7 @@ export default function Leadership() {
               className="bg-white p-12 rounded-2xl border border-gray-100 hover:shadow-sm transition-all duration-300"
             >
               <Flex className="flex items-start gap-6">
-                <Box className="text-4xl mt-2">
+                <Box className="text-4xl mt-2" role="img" aria-label="Money bag">
                   💰
                 </Box>
                 <Box className="flex-1">
@@ -283,7 +306,7 @@ export default function Leadership() {
               className="bg-white p-12 rounded-2xl border border-gray-100 hover:shadow-sm transition-all duration-300"
             >
               <Flex className="flex items-start gap-6">
-                <Box className="text-4xl mt-2">
+                <Box className="text-4xl mt-2" role="img" aria-label="Office building">
                   🏢
                 </Box>
                 <Box className="flex-1">
@@ -306,7 +329,7 @@ export default function Leadership() {
               className="bg-white p-12 rounded-2xl border border-gray-100 hover:shadow-sm transition-all duration-300"
             >
               <Flex className="flex items-start gap-6">
-                <Box className="text-4xl mt-2">
+                <Box className="text-4xl mt-2" role="img" aria-label="Lightning bolt">
                   ⚡
                 </Box>
                 <Box className="flex-1">
@@ -329,7 +352,7 @@ export default function Leadership() {
               className="bg-white p-12 rounded-2xl border border-gray-100 hover:shadow-sm transition-all duration-300"
             >
               <Flex className="flex items-start gap-6">
-                <Box className="text-4xl mt-2">
+                <Box className="text-4xl mt-2" role="img" aria-label="Glowing star">
                   🌟
                 </Box>
                 <Box className="flex-1">
@@ -352,7 +375,7 @@ export default function Leadership() {
               className="bg-white p-12 rounded-2xl border border-gray-100 hover:shadow-sm transition-all duration-300"
             >
               <Flex className="flex items-start gap-6">
-                <Box className="text-4xl mt-2">
+                <Box className="text-4xl mt-2" role="img" aria-label="Chart increasing">
                   📈
                 </Box>
                 <Box className="flex-1">
@@ -394,32 +417,41 @@ export default function Leadership() {
             // mx="auto"
           >
             <Box 
-              as="button"
+              as={Link}
+              to="/contact"
+              display="inline-flex"
+              alignItems="center"
+              justifyContent="center"
               background={'linear-gradient(to right, #00A9E0, #6DD3EF)'}
               color="white"
               
               borderRadius="full"
-              onClick={() => window.location.href = "/contact"}
               fontWeight="medium"
               px={{md:16,base:4}}
               py={2}
-              className="bg-[#0891B2] hover:bg-[#4BC0C8]"
+              className="bg-[#0891B2] hover:bg-[#4BC0C8] inline-block"
+              _hover={{ textDecoration: "none", opacity: 0.95 }}
+              {...ctaFocusVisible}
             >
               Contact Us
             </Box>
             
             <Box 
-              as="button"
+              as={Link}
+              to="/signUp"
+              display="inline-flex"
+              alignItems="center"
+              justifyContent="center"
               bg="transparent"
               color="#0891B2"
               py={2}
-              onClick={() => window.location.href = "/signUp"}
               px={{md:16,base:4}}
               borderRadius="full"
               fontWeight="medium"
               border="1px solid #0891B2"
-              // _hover={{ bg: "rgba(255,255,255,0.1)" }}
-              // w={{ base: "full", sm: "auto" }}
+              className="inline-block"
+              _hover={{ textDecoration: "none", bg: "rgba(8, 145, 178, 0.06)" }}
+              {...ctaFocusVisible}
             >
               Sign Up Now
             </Box>

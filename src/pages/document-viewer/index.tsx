@@ -184,20 +184,34 @@ const DocumentViewerPage: React.FC = () => {
           <a
             href={documentUrl}
             download
-            className="inline-flex items-center gap-2 rounded-xl bg-black px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-black/80"
+            className="group inline-flex items-center gap-2 rounded-xl bg-black px-4 py-2 text-sm font-medium text-white transition-all hover:bg-black/80 hover:shadow-md hover:-translate-y-0.5"
           >
-            <span className="material-symbols-outlined text-base">download</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-base transition-transform group-hover:translate-y-[2px]">
+              download
+            </span>
             Download Original
           </a>
         </div>
 
         <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_18px_60px_rgba(15,23,42,0.06)]">
           {isLoading ? (
-            <div className="flex min-h-[240px] items-center justify-center">
-              <div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-300 border-t-slate-900" />
+            <div
+              className="flex min-h-[240px] flex-col items-center justify-center gap-3"
+              role="status"
+              aria-live="polite"
+              aria-busy="true"
+            >
+              <p className="sr-only">Loading document...</p>
+              <div
+                aria-hidden="true"
+                className="h-8 w-8 animate-spin rounded-full border-2 border-slate-300 border-t-slate-900"
+              />
             </div>
           ) : error ? (
-            <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+            <div
+              role="alert"
+              className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900"
+            >
               {error}
             </div>
           ) : (
@@ -214,7 +228,7 @@ const DocumentViewerPage: React.FC = () => {
                 if (block.type === 'list-item') {
                   return (
                     <p key={`${block.type}-${index}`} className="pl-5 text-[15px] leading-7 text-slate-700">
-                      <span className="mr-2 text-slate-400">•</span>
+                      <span className="mr-2 text-slate-400" aria-hidden="true">•</span>
                       {block.text}
                     </p>
                   );
@@ -226,7 +240,7 @@ const DocumentViewerPage: React.FC = () => {
                       <table className="min-w-full divide-y divide-slate-200 text-sm">
                         <tbody className="divide-y divide-slate-100">
                           {block.rows.map((row, rowIndex) => (
-                            <tr key={`row-${rowIndex}`} className="align-top">
+                            <tr key={`row-${rowIndex}`} className="align-top hover:bg-slate-50/80 transition-colors">
                               {row.map((cell, cellIndex) => (
                                 <td key={`cell-${rowIndex}-${cellIndex}`} className="whitespace-pre-wrap px-4 py-3 text-slate-700">
                                   {cell}

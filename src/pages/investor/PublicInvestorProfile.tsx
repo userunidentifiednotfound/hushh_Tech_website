@@ -479,8 +479,14 @@ const PublicInvestorProfilePage: React.FC = () => {
                     <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center">
                       <span className="material-symbols-outlined text-gray-600 text-xl" style={{ fontVariationSettings: "'wght' 400" }}>mail</span>
                     </div>
-                      <div>
-                        <p className="text-sm font-semibold text-gray-900">{basicInfo.email || 'Contact hidden'}</p>
+                      <div className="min-w-0 flex-1">
+                        <p
+                          className="text-sm font-semibold text-gray-900 whitespace-normal break-words"
+                          style={{ overflowWrap: "anywhere" }}
+                          data-testid="profile-email-value"
+                        >
+                          {basicInfo.email || 'Contact hidden'}
+                        </p>
                         <p className="text-xs text-gray-500 font-medium">Contact masked for privacy</p>
                       </div>
                     </div>

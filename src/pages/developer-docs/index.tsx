@@ -23,7 +23,7 @@ import {
   IconButton,
   useDisclosure,
 } from '@chakra-ui/react';
-import { FiHome, FiSmartphone, FiCode, FiMenu, FiPackage, FiBook, FiHelpCircle } from 'react-icons/fi';
+import { FiHome, FiSmartphone, FiCode, FiMenu, FiPackage, FiBook, FiHelpCircle, FiCheck } from 'react-icons/fi';
 import { SiApple, SiAndroid, SiReact } from 'react-icons/si';
 
 // Primary accent color
@@ -44,7 +44,14 @@ const Sidebar = ({ activeSection, setActiveSection, isMobile = false }: {
   isMobile?: boolean;
 }) => {
   return (
-    <VStack align="stretch" spacing={1} py={6} px={4}>
+    <VStack
+      as="nav"
+      align="stretch"
+      spacing={1}
+      py={6}
+      px={4}
+      aria-label="Developer documentation"
+    >
       {/* Header */}
       <Box px={3} pb={4}>
         <Text fontSize="xs" fontWeight="bold" color="gray.500" textTransform="uppercase" letterSpacing="wider">
@@ -62,6 +69,7 @@ const Sidebar = ({ activeSection, setActiveSection, isMobile = false }: {
           <Box
             key={item.id}
             as="button"
+            type="button"
             onClick={() => setActiveSection(item.id)}
             display="flex"
             alignItems="center"
@@ -75,17 +83,24 @@ const Sidebar = ({ activeSection, setActiveSection, isMobile = false }: {
             fontWeight={isActive ? 'bold' : 'medium'}
             fontSize="sm"
             transition="all 0.2s"
+            aria-current={isActive ? 'true' : undefined}
             _hover={{
               bg: isActive ? `${PRIMARY_COLOR}15` : 'gray.50',
               color: 'gray.900',
             }}
+            _focusVisible={{
+              outline: '2px solid',
+              outlineColor: PRIMARY_COLOR,
+              outlineOffset: '2px',
+            }}
             w="full"
             textAlign="left"
           >
-            <Icon 
-              as={item.icon} 
-              boxSize={5} 
+            <Icon
+              as={item.icon}
+              boxSize={5}
               color={isActive ? PRIMARY_COLOR : 'gray.400'}
+              aria-hidden
             />
             <Text>{item.label}</Text>
           </Box>
@@ -112,8 +127,14 @@ const Sidebar = ({ activeSection, setActiveSection, isMobile = false }: {
           fontSize="sm"
           transition="all 0.2s"
           _hover={{ bg: 'gray.50', color: 'gray.900' }}
+          _focusVisible={{
+            outline: '2px solid',
+            outlineColor: PRIMARY_COLOR,
+            outlineOffset: '2px',
+            borderRadius: 'lg',
+          }}
         >
-          <Icon as={FiHelpCircle} boxSize={5} />
+          <Icon as={FiHelpCircle} boxSize={5} aria-hidden />
           <Text>FAQ</Text>
         </Box>
       </Box>
@@ -127,55 +148,94 @@ const Step = ({ number, title, description, code }: {
   title: string;
   description: string;
   code?: string;
-}) => (
-  <HStack align="start" spacing={4}>
-    <Flex
-      flexShrink={0}
-      w={8}
-      h={8}
-      borderRadius="full"
-      bg={`${PRIMARY_COLOR}20`}
-      color={PRIMARY_COLOR}
-      fontWeight="bold"
-      fontSize="sm"
-      align="center"
-      justify="center"
-    >
-      {number}
-    </Flex>
-    <VStack align="start" spacing={1} flex={1}>
-      <Text fontWeight="bold" color="gray.900">{title}</Text>
-      <Text fontSize="sm" color="gray.500">{description}</Text>
-      {code && (
-        <Code
-          display="block"
-          w="full"
-          p={3}
-          mt={2}
-          borderRadius="lg"
-          bg="gray.900"
-          color="green.400"
-          fontSize="xs"
-          whiteSpace="pre-wrap"
-          overflowX="auto"
-        >
-          {code}
-        </Code>
-      )}
-    </VStack>
-  </HStack>
-);
+}) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    if (code) {
+      navigator.clipboard.writeText(code);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  return (
+    <HStack align="start" spacing={4}>
+      <Flex
+        flexShrink={0}
+        w={8}
+        h={8}
+        borderRadius="full"
+        bg={`${PRIMARY_COLOR}20`}
+        color={PRIMARY_COLOR}
+        fontWeight="bold"
+        fontSize="sm"
+        align="center"
+        justify="center"
+      >
+        {number}
+      </Flex>
+      <VStack align="start" spacing={1} flex={1} w="full" overflow="hidden">
+        <Text fontWeight="bold" color="gray.900">{title}</Text>
+        <Text fontSize="sm" color="gray.500">{description}</Text>
+        {code && (
+          <Box position="relative" w="full" mt={2}>
+            <Code
+              display="block"
+              w="full"
+              p={4}
+              pt={10}
+              borderRadius="lg"
+              bg="gray.900"
+              color="green.400"
+              fontSize="xs"
+              whiteSpace="pre-wrap"
+              overflowX="auto"
+            >
+              {code}
+            </Code>
+            <Box
+              as="button"
+              onClick={handleCopy}
+              position="absolute"
+              top={2}
+              right={2}
+              px={3}
+              py={1.5}
+              bg="whiteAlpha.200"
+              color="gray.300"
+              fontSize="xs"
+              fontWeight="medium"
+              borderRadius="md"
+              transition="all 0.2s"
+              _hover={{ bg: 'whiteAlpha.300', color: 'white' }}
+              _active={{ bg: 'green.500', color: 'white' }}
+            >
+              {copied ? 'Copied!' : 'Copy'}
+            </Box>
+          </Box>
+        )}
+      </VStack>
+    </HStack>
+  );
+};
 
 // Main Content Component
 const MainContent = ({ activeSection }: { activeSection: string }) => {
+  const [feedback, setFeedback] = useState<string | null>(null);
+
   return (
     <Box maxW="900px" mx="auto" px={{ base: 4, md: 8 }} py={{ base: 6, md: 10 }}>
       {/* Breadcrumbs */}
       <HStack spacing={2} mb={8} flexWrap="wrap">
         <Text fontSize="sm" color="gray.400">Home</Text>
-        <Text fontSize="sm" color="gray.400">›</Text>
+        <Text as="span" fontSize="sm" color="gray.400" aria-hidden>
+          ›
+        </Text>
         <Text fontSize="sm" color="gray.400">Guides</Text>
-        <Text fontSize="sm" color="gray.400">›</Text>
+        <Text as="span" fontSize="sm" color="gray.400" aria-hidden>
+          ›
+        </Text>
         <Badge bg={`${PRIMARY_COLOR}15`} color={PRIMARY_COLOR} px={2} py={0.5} borderRadius="md" fontSize="xs">
           Building Apps
         </Badge>
@@ -184,7 +244,8 @@ const MainContent = ({ activeSection }: { activeSection: string }) => {
       {/* Page Title */}
       <VStack align="start" spacing={4} mb={10}>
         <Heading 
-          as="h1" 
+          as="h1"
+          id="developer-docs-primary-heading"
           fontSize={{ base: '3xl', md: '4xl', lg: '5xl' }}
           fontWeight="black"
           color="gray.900"
@@ -226,6 +287,7 @@ const MainContent = ({ activeSection }: { activeSection: string }) => {
                 align="center" 
                 justify="center"
                 fontSize="2xl"
+                aria-hidden
               >
                 ⚛️
               </Flex>
@@ -293,53 +355,75 @@ git push
       </Accordion>
 
       {/* Feedback Section */}
-      <Box 
-        mt={12} 
-        p={6} 
-        bg="gray.50" 
-        borderRadius="xl"
-        border="1px solid"
-        borderColor="gray.200"
-      >
-        <HStack justify="space-between" flexWrap="wrap" gap={4}>
-          <VStack align="start" spacing={1}>
-            <Text fontWeight="bold" color="gray.900">Was this guide helpful? 🤔</Text>
-            <Text fontSize="sm" color="gray.500">We value your feedback!</Text>
-          </VStack>
-          <HStack spacing={3}>
-            <Box
-              as="button"
-              px={4}
-              py={2}
-              bg="white"
-              border="1px solid"
-              borderColor="gray.200"
-              borderRadius="lg"
-              fontSize="sm"
-              fontWeight="medium"
-              transition="all 0.2s"
-              _hover={{ borderColor: 'green.400' }}
-            >
-              👍 Yes
-            </Box>
-            <Box
-              as="button"
-              px={4}
-              py={2}
-              bg="white"
-              border="1px solid"
-              borderColor="gray.200"
-              borderRadius="lg"
-              fontSize="sm"
-              fontWeight="medium"
-              transition="all 0.2s"
-              _hover={{ borderColor: 'red.400' }}
-            >
-              👎 No
-            </Box>
+      {feedback ? (
+        <Box 
+          mt={12} 
+          p={6} 
+          bg="green.50" 
+          borderRadius="xl"
+          border="1px solid"
+          borderColor="green.200"
+        >
+          <HStack spacing={3} justify="center">
+            <Icon as={FiCheck} color="green.500" boxSize={6} aria-hidden />
+            <Text fontWeight="medium" color="green.800" fontSize="lg">
+              Thanks for your feedback!
+            </Text>
           </HStack>
-        </HStack>
-      </Box>
+        </Box>
+      ) : (
+        <Box 
+          mt={12} 
+          p={6} 
+          bg="gray.50" 
+          borderRadius="xl"
+          border="1px solid"
+          borderColor="gray.200"
+        >
+          <HStack justify="space-between" flexWrap="wrap" gap={4}>
+            <VStack align="start" spacing={1}>
+              <Text fontWeight="bold" color="gray.900">Was this guide helpful? 🤔</Text>
+              <Text fontSize="sm" color="gray.500">We value your feedback!</Text>
+            </VStack>
+            <HStack spacing={3}>
+              <Box
+                as="button"
+                type="button"
+                onClick={() => setFeedback('yes')}
+                px={4}
+                py={2}
+                bg="white"
+                border="1px solid"
+                borderColor="gray.200"
+                borderRadius="lg"
+                fontSize="sm"
+                fontWeight="medium"
+                transition="all 0.2s"
+                _hover={{ borderColor: 'green.400', bg: 'green.50' }}
+              >
+                👍 Yes
+              </Box>
+              <Box
+                as="button"
+                type="button"
+                onClick={() => setFeedback('no')}
+                px={4}
+                py={2}
+                bg="white"
+                border="1px solid"
+                borderColor="gray.200"
+                borderRadius="lg"
+                fontSize="sm"
+                fontWeight="medium"
+                transition="all 0.2s"
+                _hover={{ borderColor: 'red.400', bg: 'red.50' }}
+              >
+                👎 No
+              </Box>
+            </HStack>
+          </HStack>
+        </Box>
+      )}
     </Box>
   );
 };
@@ -355,6 +439,7 @@ const DeveloperDocsPage = () => {
       {/* Desktop Sidebar */}
       {!isMobile && (
         <Box
+          as="aside"
           w="280px"
           flexShrink={0}
           bg="white"
@@ -376,7 +461,9 @@ const DeveloperDocsPage = () => {
       {isMobile && (
         <IconButton
           aria-label="Open menu"
-          icon={<FiMenu />}
+          aria-expanded={isOpen}
+          aria-controls="developer-docs-mobile-nav"
+          icon={<FiMenu aria-hidden />}
           position="fixed"
           top="100px"
           left={4}
@@ -392,7 +479,7 @@ const DeveloperDocsPage = () => {
       {/* Mobile Drawer */}
       <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
         <DrawerOverlay />
-        <DrawerContent bg="white">
+        <DrawerContent id="developer-docs-mobile-nav" bg="white">
           <DrawerCloseButton />
           <DrawerBody p={0}>
             <Sidebar 
@@ -408,7 +495,13 @@ const DeveloperDocsPage = () => {
       </Drawer>
 
       {/* Main Content */}
-      <Box flex={1} bg="white" overflowY="auto">
+      <Box
+        as="main"
+        flex={1}
+        bg="white"
+        overflowY="auto"
+        aria-labelledby="developer-docs-primary-heading"
+      >
         <MainContent activeSection={activeSection} />
       </Box>
     </Flex>

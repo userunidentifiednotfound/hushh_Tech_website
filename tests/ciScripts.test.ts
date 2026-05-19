@@ -137,6 +137,20 @@ const validPrBody = `## Summary
 `;
 
 describe("CI workflow scripts", () => {
+  it("keeps Cloud Run runtime dependencies aligned with server API imports", () => {
+    const supabaseHelper = fs.readFileSync(
+      path.join(repoRoot, "api/shared/supabaseServerClient.js"),
+      "utf8"
+    );
+    const runtimePackage = JSON.parse(
+      fs.readFileSync(path.join(repoRoot, "package-server.json"), "utf8")
+    );
+
+    if (supabaseHelper.includes('from "ws"')) {
+      expect(runtimePackage.dependencies).toHaveProperty("ws");
+    }
+  });
+
   it("accepts a conventional PR title and complete template metadata", () => {
     const tempDir = makeTempDir();
     const eventPath = path.join(tempDir, "event.json");

@@ -18,7 +18,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { Box, Center, Spinner, Text, VStack } from '@chakra-ui/react';
+import { Box, Center, Spinner, Text, VStack, Badge } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import KycFlowContainer from '../../components/kyc/screens/KycFlowContainer';
 import { KycCheckResponse } from '../../types/kyc';
@@ -43,7 +43,7 @@ const LoadingScreen: React.FC = () => (
     bg="white"
   >
     <Center h="100vh">
-      <VStack spacing={4}>
+      <VStack spacing={4} role="status" aria-live="polite">
         <Spinner
           size="xl"
           color="gray.600"
@@ -155,6 +155,22 @@ const KycFlowPage: React.FC = () => {
       <Box minH="100vh" bg="white">
         <HushhTechHeader />
         <Box pb="40px">
+          {isDemo && (
+            <Center pt={6} pb={2}>
+              <Badge 
+                colorScheme="purple" 
+                variant="subtle" 
+                px={4} 
+                py={1} 
+                borderRadius="full"
+                fontSize="xs"
+                fontWeight="600"
+                letterSpacing="wider"
+              >
+                KYC DEMO SESSION
+              </Badge>
+            </Center>
+          )}
           {/* KYC Flow Container */}
           <KycFlowContainer
             relyingPartyId={bankId}

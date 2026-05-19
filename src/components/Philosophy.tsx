@@ -3,7 +3,7 @@ import { FaLinkedin } from "react-icons/fa";
 
 export default function Philosophy() {
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12">
+    <main className="max-w-7xl mx-auto px-4 py-12">
       {/* Heading Section */}
       <div className="text-center mb-16">
         <h1 className="text-3xl md:text-4xl font-bold mb-6">Investment meets Innovation</h1>
@@ -13,7 +13,8 @@ export default function Philosophy() {
         </p>
 
         <div className="w-48 h-48 md:w-64 md:h-64 mx-auto mb-8 flex items-center justify-center bg-white rounded-lg overflow-hidden">
-          <img src={lineGraph} alt="SVG Image" className="w-full h-full object-contain" />
+          {/* Decorative hero graphic; headings and body copy carry the message. */}
+          <img src={lineGraph} alt="" className="w-full h-full object-contain" />
         </div>
 
         <p className="text-base md:text-lg mb-16">
@@ -53,7 +54,7 @@ export default function Philosophy() {
         <h2 className="text-2xl md:text-3xl font-bold mb-8">Our <span className="text-red-600">Investment Philosophy</span></h2>
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-3">
           <div>
-            <div className="mb-4">
+            <div className="mb-4" aria-hidden>
               <span className="text-4xl">∫𝑥</span>
             </div>
             <h3 className="text-xl font-bold mb-2">Math-Driven Precision</h3>
@@ -62,7 +63,7 @@ export default function Philosophy() {
             </p>
           </div>
           <div>
-            <div className="mb-4">
+            <div className="mb-4" aria-hidden>
               <span className="text-4xl">🧠</span>
             </div>
             <h3 className="text-xl font-bold mb-2">AI-Powered Insight</h3>
@@ -71,7 +72,7 @@ export default function Philosophy() {
             </p>
           </div>
           <div>
-            <div className="mb-4">
+            <div className="mb-4" aria-hidden>
               <span className="text-4xl">⚖️</span>
             </div>
             <h3 className="text-xl font-bold mb-2">Long-Term Stability</h3>
@@ -118,7 +119,8 @@ export default function Philosophy() {
       <section className="text-center">
         <h2 className="text-2xl md:text-3xl font-bold mb-6">Join <span className="text-red-600">Us</span></h2>
         <p className="mb-8">
-          Whether you're an individual or an institution, Hushh 🤫 Technologies LLC invites you to join us on our journey.
+          Whether you're an individual or an institution, Hushh{' '}
+          <span aria-hidden>🤫</span> Technologies LLC invites you to join us on our journey.
         </p>
         <div className="flex justify-center">
           <a
@@ -126,12 +128,12 @@ export default function Philosophy() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Open Manish Sainani's LinkedIn profile"
-            className="text-red-600 hover:text-red-700 flex items-center"
+            className="text-red-600 hover:text-red-700 flex items-center rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
           >
             <FaLinkedin aria-hidden="true" focusable="false" className="h-6 w-6" />
           </a>
         </div>
       </section>
-    </div>
+    </main>
   );
 }

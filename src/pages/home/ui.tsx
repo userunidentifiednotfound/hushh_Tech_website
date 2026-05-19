@@ -17,15 +17,22 @@ export default function HomePage() {
   return (
     <div
       data-page="home"
-      className="bg-white antialiased text-gray-900 min-h-screen flex flex-col relative selection:bg-hushh-blue selection:text-white"
+      className="bg-white antialiased text-gray-900 min-h-screen flex flex-col relative selection:bg-hushh-blue selection:text-white overflow-x-hidden"
     >
       <HushhTechHeader />
 
-      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-32 lg:pb-12 pt-4">
+      <main
+        id="main-content"
+        className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-32 lg:pb-12 pt-4"
+      >
         <div className="flex min-h-[calc(100vh-6rem)] flex-col gap-12 lg:gap-16">
-          <section className="grid grid-cols-1 gap-8 lg:min-h-[70vh] lg:grid-cols-2 lg:items-center lg:gap-12">
-            <div className="flex flex-col justify-center py-4 lg:min-h-[58vh]">
+          <section
+            className="grid grid-cols-1 gap-8 lg:min-h-[70vh] lg:grid-cols-2 lg:items-center lg:gap-12"
+            aria-labelledby="home-hero-heading"
+          >
+            <div className="flex min-w-0 flex-col justify-center py-4 lg:min-h-[58vh]">
               <h1
+                id="home-hero-heading"
                 className="text-[2.75rem] leading-[1.1] font-normal text-black tracking-tight font-serif sm:text-[3.25rem] lg:text-[4rem]"
                 style={playfair}
               >
@@ -41,30 +48,48 @@ export default function HomePage() {
                   onClick={primaryCTA.action}
                   disabled={primaryCTA.loading}
                   variant={HushhTechCtaVariant.BLACK}
+                  aria-busy={primaryCTA.loading}
                 >
                   {primaryCTA.text}
                   <ArrowForwardIcon className="thin-icon text-lg" />
 
+                  {primaryCTA.loading ? (
+                    <>
+                      <span
+                        className="inline-block w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin"
+                        aria-hidden="true"
+                      />
+                      {primaryCTA.text}
+                    </>
+                  ) : (
+                    <>
+                      {primaryCTA.text}
+                      <span className="material-symbols-outlined thin-icon text-lg" aria-hidden="true">
+                        arrow_forward
+                      </span>
+                    </>
+                  )}
                 </HushhTechCta>
                 <HushhTechCta
                   onClick={() => onNavigate("/discover-fund-a")}
                   variant={HushhTechCtaVariant.WHITE}
+                  aria-label="Discover Fund A — learn about our flagship product"
                 >
                   Discover Fund A
                 </HushhTechCta>
               </div>
               <div className="mt-6 border-t border-b border-gray-100 py-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-start sm:gap-8">
                 <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined thin-icon text-lg text-ios-green">
+                  <span className="material-symbols-outlined thin-icon text-lg text-ios-green" aria-hidden="true">
                     verified_user
                   </span>
                   <span className="text-[10px] font-medium tracking-widest uppercase text-gray-400">
                     SEC Registered
                   </span>
                 </div>
-                <div className="hidden sm:block w-1 h-1 bg-gray-300 rounded-full" />
+                <div className="hidden sm:block w-1 h-1 bg-gray-300 rounded-full" aria-hidden="true" />
                 <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined thin-icon text-lg text-hushh-blue">
+                  <span className="material-symbols-outlined thin-icon text-lg text-hushh-blue" aria-hidden="true">
                     lock
                   </span>
                   <span className="text-[10px] font-medium tracking-widest uppercase text-gray-400">
@@ -74,10 +99,10 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="relative mt-2 lg:mt-0">
+            <div className="relative mt-2 min-w-0 lg:mt-0">
               <div className="group bg-ios-dark hover:bg-gray-100 text-white hover:text-gray-900 border border-white/10 hover:border-gray-300 p-8 sm:p-10 lg:p-12 rounded-2xl relative overflow-hidden shadow-2xl w-full lg:max-w-[520px] lg:ml-auto transition-all duration-700 ease-out hover:-rotate-[8deg]">
-                <div className="absolute -top-10 -right-10 w-40 h-40 bg-hushh-blue/15 rounded-full blur-3xl" />
-                <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-hushh-blue/5 to-transparent" />
+                <div className="absolute -top-10 -right-10 w-40 h-40 bg-hushh-blue/15 rounded-full blur-3xl" aria-hidden="true" />
+                <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-hushh-blue/5 to-transparent" aria-hidden="true" />
 
                 <div className="relative z-10 flex flex-col gap-6">
                   <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
@@ -103,7 +128,7 @@ export default function HomePage() {
                         Target Net IRR
                       </span>
                       <span
-                        className="text-[48px] font-serif font-light tracking-tighter text-ios-green leading-none sm:text-[56px]"
+                        className="text-[40px] font-serif font-light tracking-tighter text-ios-green leading-none sm:text-[48px] lg:text-[56px]"
                         style={playfair}
                       >
                         18-23%
@@ -124,14 +149,14 @@ export default function HomePage() {
 
                   <button
                     type="button"
-                    className="w-full pt-4 border-t border-white/10 group-hover:border-gray-300 flex items-center justify-between cursor-pointer bg-transparent text-left transition-colors duration-700"
+                    className="w-full min-h-[44px] pt-4 border-t border-white/10 group-hover:border-gray-300 flex items-center justify-between cursor-pointer bg-transparent text-left transition-colors duration-700 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-hushh-blue focus-visible:ring-offset-2"
                     onClick={() => onNavigate("/discover-fund-a")}
                     aria-label="View performance details"
                   >
                     <span className="text-xs font-medium tracking-wide uppercase text-hushh-blue">
                       Performance Details
                     </span>
-                    <span className="material-symbols-outlined thin-icon text-sm text-hushh-blue group-hover:translate-x-1 transition-transform">
+                    <span className="material-symbols-outlined thin-icon text-sm text-hushh-blue group-hover:translate-x-1 transition-transform" aria-hidden="true">
                       arrow_forward
                     </span>
                   </button>
@@ -140,17 +165,23 @@ export default function HomePage() {
             </div>
           </section>
 
-          <section className="mt-auto space-y-12 lg:space-y-16">
+          <section className="mt-auto space-y-12 lg:space-y-16" aria-labelledby="home-advantage-heading">
             <div className="inline-block px-3 py-1 border border-hushh-blue/20 rounded-full bg-hushh-blue/5">
               <span className="text-[10px] tracking-widest uppercase font-medium text-hushh-blue flex items-center gap-1">
-                <span className="w-1.5 h-1.5 bg-hushh-blue rounded-full" />
+                <span
+                  className="relative flex items-center justify-center w-1.5 h-1.5"
+                  aria-hidden="true"
+                >
+                  <span className="absolute inline-flex w-full h-full bg-hushh-blue rounded-full opacity-75 animate-ping" />
+                  <span className="relative w-1.5 h-1.5 bg-hushh-blue rounded-full" />
+                </span>
                 AI-Powered Investing
               </span>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
-              <div className="bg-ios-gray-bg p-5 rounded-2xl border border-gray-200/60 flex flex-col justify-between min-h-[180px] sm:min-h-[220px] hover:border-hushh-blue/30 transition-colors">
-                <span className="material-symbols-outlined thin-icon text-3xl mb-4 text-hushh-blue">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6" role="list">
+              <div className="bg-ios-gray-bg p-5 rounded-2xl border border-gray-200/60 flex flex-col justify-between min-h-[180px] sm:min-h-[220px] hover:border-hushh-blue/30 transition-colors" role="listitem">
+                <span className="material-symbols-outlined thin-icon text-3xl mb-4 text-hushh-blue" aria-hidden="true">
                   neurology
                 </span>
                 <div>
@@ -165,8 +196,8 @@ export default function HomePage() {
                   </p>
                 </div>
               </div>
-              <div className="bg-ios-gray-bg p-5 rounded-2xl border border-gray-200/60 flex flex-col justify-between min-h-[180px] sm:min-h-[220px] hover:border-hushh-blue/30 transition-colors">
-                <span className="material-symbols-outlined thin-icon text-3xl mb-4 text-ios-dark">
+              <div className="bg-ios-gray-bg p-5 rounded-2xl border border-gray-200/60 flex flex-col justify-between min-h-[180px] sm:min-h-[220px] hover:border-hushh-blue/30 transition-colors" role="listitem">
+                <span className="material-symbols-outlined thin-icon text-3xl mb-4 text-ios-dark" aria-hidden="true">
                   supervised_user_circle
                 </span>
                 <div>
@@ -189,12 +220,13 @@ export default function HomePage() {
                   Why Hushh
                 </p>
                 <h2
+                  id="home-advantage-heading"
                   className="text-2xl font-medium mb-8 tracking-tight font-serif sm:text-3xl"
                   style={playfair}
                 >
                   The Hushh Advantage
                 </h2>
-                <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-4">
+                <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-4" role="list">
                   {[
                     {
                       icon: "analytics",
@@ -228,12 +260,14 @@ export default function HomePage() {
                     <div
                       key={item.icon}
                       className="flex flex-col items-center text-center gap-3"
+                      role="listitem"
                     >
                       <div
                         className={`w-12 h-12 rounded-full border border-gray-200/60 flex items-center justify-center ${item.bg}`}
                       >
                         <span
                           className={`material-symbols-outlined thin-icon ${item.color}`}
+                          aria-hidden="true"
                         >
                           {item.icon}
                         </span>
@@ -251,7 +285,7 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-4" role="list">
                 {[
                   {
                     icon: "rocket_launch",
@@ -281,9 +315,11 @@ export default function HomePage() {
                   <div
                     key={item.icon}
                     className="bg-ios-gray-bg border border-gray-200/60 p-4 rounded-2xl hover:border-hushh-blue/30 transition-colors"
+                    role="listitem"
                   >
                     <span
                       className={`material-symbols-outlined thin-icon ${item.color} mb-2`}
+                      aria-hidden="true"
                     >
                       {item.icon}
                     </span>
@@ -301,7 +337,7 @@ export default function HomePage() {
                   variant={HushhTechCtaVariant.BLACK}
                 >
                   Explore Our Approach
-                  <span className="material-symbols-outlined thin-icon text-lg">
+                  <span className="material-symbols-outlined thin-icon text-lg" aria-hidden="true">
                     arrow_right_alt
                   </span>
                 </HushhTechCta>

@@ -35,7 +35,7 @@ const Consumers = () => {
         <Heading
           fontWeight={"700"}
           lineHeight={"1.2"}
-          fontSize={{ md: "1.25rem", base: "0.65rem" }}
+          fontSize={{ md: "1.25rem", base: "1rem" }}
           as={"h1"}
           color={"rgba(61,61,145,1)"}
           mt={{md:'4rem',base:'2rem'}}
@@ -55,13 +55,13 @@ const Consumers = () => {
           color={"#434343"}
           fontWeight={"700"}
           lineHeight={"1.2"}
-          fontSize={{ md: "1.5rem", base: "0.8rem" }}
+          fontSize={{ md: "1.5rem", base: "1.125rem" }}
         >
           Your Data, Your Rules. Get Rewarded for What You Share.
         </Text>
         <Text
           fontWeight={"400"}
-          fontSize={{ md: "1rem", base: "0.5rem" }}
+          fontSize={{ md: "1rem", base: "0.9375rem" }}
           lineHeight={"1.2"}
         >
           Take control of your digital footprint and unlock personalized
@@ -89,13 +89,13 @@ const Consumers = () => {
             >
               <Text
                 fontWeight="400"
-                fontSize={{ md: "0.75rem", base: "0.45rem" }}
+                fontSize={{ md: "0.75rem", base: "0.8125rem" }}
               >
                 Hushh Companion
               </Text>
               <Text
                 fontWeight={"600"}
-                fontSize={{ md: "1.25rem", base: "0.75rem" }}
+                fontSize={{ md: "1.25rem", base: "1rem" }}
               >
                 Track Your Digital <br></br> Footprint
               </Text>
@@ -119,13 +119,13 @@ const Consumers = () => {
             <Box p={4} bg={"rgba(28,28,28,1)"} color={"white"}>
               <Text
                 fontWeight="400"
-                fontSize={{ md: "0.75rem", base: "0.45rem" }}
+                fontSize={{ md: "0.75rem", base: "0.8125rem" }}
               >
                 Hushh Wallet
               </Text>
               <Text
                 fontWeight={"600"}
-                fontSize={{ md: "1.25rem", base: "0.75rem" }}
+                fontSize={{ md: "1.25rem", base: "1rem" }}
               >
                 Your Personal Data, <br></br> Your Powerhouse
               </Text>
@@ -149,13 +149,13 @@ const Consumers = () => {
             <Box p={4} bg={"rgba(28,28,28,1)"} color={"white"}>
               <Text
                 fontWeight="400"
-                fontSize={{ md: "0.75rem", base: "0.45rem" }}
+                fontSize={{ md: "0.75rem", base: "0.8125rem" }}
               >
                 Vibe Search
               </Text>
               <Text
                 fontWeight={"600"}
-                fontSize={{ md: "1.25rem", base: "0.75rem" }}
+                fontSize={{ md: "1.25rem", base: "1rem" }}
               >
                 Stop Scrolling, <br></br> Start Discovering!
               </Text>
@@ -220,7 +220,7 @@ const Consumers = () => {
             color={"#666666"}
             fontWeight={"400"}
             lineHeight={"1.2"}
-            fontSize={{ md: "1rem", base: "0.65rem" }}
+            fontSize={{ md: "1rem", base: "0.9375rem" }}
           >
             You walk into your favorite store, and the sales agent understands
             your style, size, and even your vibe. They offer you personalized
@@ -231,7 +231,7 @@ const Consumers = () => {
             color={"#666666"}
             fontWeight={"700"}
             lineHeight={"1.2"}
-            fontSize={{ md: "1rem", base: "0.65rem" }}
+            fontSize={{ md: "1rem", base: "0.9375rem" }}
           >
             This is the power of Hushh Wallet.
           </Text>
@@ -248,7 +248,7 @@ const Consumers = () => {
           Hushh Wallet
         </Text>
         <Text
-          fontSize={{ md: "1.16rem", base: "0.65rem" }}
+          fontSize={{ md: "1.16rem", base: "0.9375rem" }}
           color={"#434343"}
           fontWeight={"600"}
           lineHeight={"1.2"}
@@ -260,7 +260,7 @@ const Consumers = () => {
         <Text
           color={"#434343"}
           fontWeight={"400"}
-          fontSize={{ md: "1.5rem", base: "0.75rem" }}
+          fontSize={{ md: "1.5rem", base: "1.125rem" }}
           lineHeight={"1.2"}
         >
           We live in a{" "}
@@ -269,7 +269,7 @@ const Consumers = () => {
         <Text
           color={"#434343"}
           fontWeight={"400"}
-          fontSize={{ md: "1.5rem", base: "0.75rem" }}
+          fontSize={{ md: "1.5rem", base: "1.125rem" }}
           lineHeight={"1.2"}
         >
           Every online interaction, every purchase, every click leaves a digital
@@ -278,7 +278,7 @@ const Consumers = () => {
         <Text
           color={"#434343"}
           fontWeight={"400"}
-          fontSize={{ md: "1.5rem", base: "0.75rem" }}
+          fontSize={{ md: "1.5rem", base: "1.125rem" }}
           lineHeight={"1.2"}
         >
           Hushh Wallet empowers you to{" "}
@@ -334,7 +334,7 @@ const Consumers = () => {
               />
             </AccordionButton>
           </Box>
-          <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.8rem" }}>
+          <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.9375rem" }}>
             Collect your data from phones, apps, brands, and data giants
             creating a comprehensive digital profile.
           </AccordionPanel>
@@ -377,7 +377,7 @@ const Consumers = () => {
               />
             </AccordionButton>
           </Box>
-          <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.8rem" }}>
+          <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.9375rem" }}>
             Manage and refine your digital identity to reflect your true self.
           </AccordionPanel>
         </AccordionItem>
@@ -419,7 +419,7 @@ const Consumers = () => {
               />
             </AccordionButton>
           </Box>
-          <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.8rem" }}>
+          <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.9375rem" }}>
             Share your data to receive tailored experiences and offers.
           </AccordionPanel>
         </AccordionItem>
@@ -461,7 +461,7 @@ const Consumers = () => {
               />
             </AccordionButton>
           </Box>
-          <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.8rem" }}>
+          <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.9375rem" }}>
             Earn rewards for sharing your data with trusted partners.
           </AccordionPanel>
         </AccordionItem>
@@ -503,7 +503,7 @@ const Consumers = () => {
               />
             </AccordionButton>
           </Box>
-          <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.8rem" }}>
+          <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.9375rem" }}>
             Maintain full control over who accesses your data and how it is
             used.
           </AccordionPanel>
@@ -554,7 +554,7 @@ const Consumers = () => {
             fontWeight={"700"}
             lineHeight={"1.2"}
             color={"#434343"}
-            fontSize={{ md: "1.5rem", base: "0.65rem" }}
+            fontSize={{ md: "1.5rem", base: "1rem" }}
           >
             Hushh Wallet is more than just an app; it's a movement.
             <br></br>
@@ -567,7 +567,11 @@ const Consumers = () => {
           />
         </HStack>
         <Button
-          maxW={{ md: "680px", base: "8rem" }}
+          maxW={{ md: "680px", base: "100%" }}
+          w={{ base: "100%", md: "auto" }}
+          whiteSpace="normal"
+          h="auto"
+          py={{ base: 3, md: 2 }}
           px={"12px"}
           bg={"rgba(153, 40, 112, 1)"}
           color={"white"}
@@ -605,7 +609,7 @@ const Consumers = () => {
           color={"#434343"}
           fontWeight={"600"}
           lineHeight={"1.2"}
-          fontSize={{ md: "1.17rem", base: "0.65rem" }}
+          fontSize={{ md: "1.17rem", base: "0.9375rem" }}
         >
           More than just a Chrome extension – it's your personal companion for a
           smarter, <br></br> more organized digital life.{" "}
@@ -656,7 +660,7 @@ const Consumers = () => {
                 />
               </AccordionButton>
             </Box>
-            <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.8rem" }}>
+            <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.9375rem" }}>
               <Box maxWidth="280px" mx="auto">
                 <UnorderedList spacing={3} textAlign="left">
                   <ListItem>
@@ -712,7 +716,7 @@ const Consumers = () => {
                 />
               </AccordionButton>
             </Box>
-            <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.8rem" }}>
+            <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.9375rem" }}>
               <Box maxWidth="280px" mx="auto">
                 <UnorderedList spacing={3} textAlign="left">
                   <ListItem>
@@ -768,7 +772,7 @@ const Consumers = () => {
                 />
               </AccordionButton>
             </Box>
-            <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.8rem" }}>
+            <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.9375rem" }}>
               <Box maxWidth="280px" mx="auto">
                 <UnorderedList spacing={3} textAlign="left">
                   <ListItem>
@@ -827,7 +831,7 @@ const Consumers = () => {
             fontWeight={"700"}
             lineHeight={"1.2"}
             color={"#434343"}
-            fontSize={{ md: "1.5rem", base: "0.65rem" }}
+            fontSize={{ md: "1.5rem", base: "1rem" }}
           >
             Ready to enhance your digital journey? Add Hushh Companion
             <br></br>
@@ -842,7 +846,11 @@ const Consumers = () => {
           />
         </HStack>
         <Button
-          maxW={{ md: "680px", base: "8rem" }}
+          maxW={{ md: "680px", base: "100%" }}
+          w={{ base: "100%", md: "auto" }}
+          whiteSpace="normal"
+          h="auto"
+          py={{ base: 3, md: 2 }}
           px={"12px"}
           bg={"rgba(153, 40, 112, 1)"}
           color={"white"}
@@ -876,7 +884,7 @@ const Consumers = () => {
           lineHeight={"1.2"}
           color={"#434343"}
           mt={{md:'1rem',base:'0.5rem'}}
-          fontSize={{ md: "1.1rem", base: "0.55rem" }}
+          fontSize={{ md: "1.1rem", base: "0.9375rem" }}
         >
           Stop Searching, Start Vibing.
         </Text>
@@ -884,7 +892,7 @@ const Consumers = () => {
           fontWeight={"600"}
           lineHeight={"1.2"}
           color={"#434343"}
-          fontSize={{ md: "1.1rem", base: "0.55rem" }}
+          fontSize={{ md: "1.1rem", base: "0.9375rem" }}
         >
           Find your perfect outfit effortlessly <br></br>with AI-powered fashion
           search.
@@ -906,7 +914,7 @@ const Consumers = () => {
               fontWeight={"700"}
               lineHeight={"1.2"}
               color={"rgba(28,28,28,1)"}
-              fontSize={{ md: "1.5rem", base: "0.65rem" }}
+              fontSize={{ md: "1.5rem", base: "1rem" }}
             >
               Unleash the Power of AI Search
             </Text>
@@ -914,7 +922,7 @@ const Consumers = () => {
               fontWeight={"400"}
               lineHeight={"1.2"}
               color={"rgba(28,28,28,1)"}
-              fontSize={{ md: "1rem", base: "0.5rem" }}
+              fontSize={{ md: "1rem", base: "0.9375rem" }}
             >
               Describe what you want using natural language - "boho summer
               dress," "Dark academia aesthetic outfits for fall," "minimal
@@ -925,7 +933,7 @@ const Consumers = () => {
               fontWeight={"400"}
               lineHeight={"1.2"}
               color={"rgba(28,28,28,1)"}
-              fontSize={{ md: "1rem", base: "0.5rem" }}
+              fontSize={{ md: "1rem", base: "0.9375rem" }}
             >
               See a look you love? Upload the picture and instantly discover
               similar items.
@@ -934,7 +942,7 @@ const Consumers = () => {
               fontWeight={"400"}
               lineHeight={"1.2"}
               color={"rgba(28,28,28,1)"}
-              fontSize={{ md: "1rem", base: "0.5rem" }}
+              fontSize={{ md: "1rem", base: "0.9375rem" }}
             >
               No more keyword stuffing – Vibe Search gets you there faster and
               more accurately.
@@ -945,9 +953,9 @@ const Consumers = () => {
 
       <HStack my={{ md: "2rem", base: "1rem" }} px={{md:'12rem',base:'0.5rem'}}>
         <VStack textAlign={'left'} alignItems={'flex-start'} justifyContent={'flex-start'}>
-          <Text fontWeight={'700'} lineHeight={'1.2'} color={'rgba(153,40,112,1)'} fontSize={{md:'1.5rem',base:'0.75rem'}}>Try Vibe Search Now</Text>
-          <Text mt={{md:'1.5rem',base:'0.5rem'}} fontWeight={'400'} fontSize={{md:'1rem',base:'0.5rem'}} lineHeight={'1.2'}>Example Queries: </Text>
-          <UnorderedList gap={{md:'1rem',base:'0.5rem'}} display={'flex'} flexDirection={'column'} fontWeight={'400'} fontSize={{md:'1rem',base:'0.5rem'}} lineHeight={'1.2'}>
+          <Text fontWeight={'700'} lineHeight={'1.2'} color={'rgba(153,40,112,1)'} fontSize={{md:'1.5rem',base:'1.125rem'}}>Try Vibe Search Now</Text>
+          <Text mt={{md:'1.5rem',base:'0.5rem'}} fontWeight={'400'} fontSize={{md:'1rem',base:'0.9375rem'}} lineHeight={'1.2'}>Example Queries: </Text>
+          <UnorderedList gap={{md:'1rem',base:'0.5rem'}} display={'flex'} flexDirection={'column'} fontWeight={'400'} fontSize={{md:'1rem',base:'0.9375rem'}} lineHeight={'1.2'}>
              <ListItem>Boho Summer Dress</ListItem>
              <ListItem>Casual Summer Dress</ListItem>
              <ListItem>Minimal Office Outfit</ListItem>
@@ -978,7 +986,7 @@ const Consumers = () => {
               fontWeight={"700"}
               lineHeight={"1.2"}
               color={"rgba(28,28,28,1)"}
-              fontSize={{ md: "1.5rem", base: "0.65rem" }}
+              fontSize={{ md: "1.5rem", base: "1rem" }}
             >
               Personalization That Gets You
             </Text>
@@ -986,7 +994,7 @@ const Consumers = () => {
               fontWeight={"400"}
               lineHeight={"1.2"}
               color={"rgba(28,28,28,1)"}
-              fontSize={{ md: "1rem", base: "0.5rem" }}
+              fontSize={{ md: "1rem", base: "0.9375rem" }}
             >
               <span style={{fontWeight:'500'}}>Your Style, Your Feed:</span> Vibe Search learns what you love. The more you interact, the more tailored your results become.
             </Text>
@@ -994,7 +1002,7 @@ const Consumers = () => {
               fontWeight={"400"}
               lineHeight={"1.2"}
               color={"rgba(28,28,28,1)"}
-              fontSize={{ md: "1rem", base: "0.5rem" }}
+              fontSize={{ md: "1rem", base: "0.9375rem" }}
             >
               <span style={{fontWeight:'500'}}>Effortless Discovery:</span> Just browse and like products – Vibe Search personalizes your experience automatically.
             </Text>
@@ -1002,7 +1010,7 @@ const Consumers = () => {
               fontWeight={"400"}
               lineHeight={"1.2"}
               color={"rgba(28,28,28,1)"}
-              fontSize={{ md: "1rem", base: "0.5rem" }}
+              fontSize={{ md: "1rem", base: "0.9375rem" }}
             >
               <span style={{fontWeight:'500'}}>Control Your Style Journey: </span>Soon you'll be able to fine-tune your preferences for ultimate control.
             </Text>
@@ -1010,9 +1018,13 @@ const Consumers = () => {
         </HStack>
 
         <VStack my={{md:'2rem',base:'1rem'}} textAlign={'center'} gap={{md:'2rem',base:'1rem'}}>
-          <Text color={'#434343'} fontSize={{md:'1.5rem',base:'0.75rem'}} fontWeight={'600'}>Ready to find your perfect fashion match? Start vibing with Vibe <br></br> Search today!</Text>
+          <Text color={'#434343'} fontSize={{md:'1.5rem',base:'1.125rem'}} fontWeight={'600'}>Ready to find your perfect fashion match? Start vibing with Vibe <br></br> Search today!</Text>
            <Button
-          maxW={{ md: "680px", base: "8rem" }}
+          maxW={{ md: "680px", base: "100%" }}
+          w={{ base: "100%", md: "auto" }}
+          whiteSpace="normal"
+          h="auto"
+          py={{ base: 3, md: 2 }}
           px={"12px"}
           bg={"rgba(153, 40, 112, 1)"}
           color={"white"}

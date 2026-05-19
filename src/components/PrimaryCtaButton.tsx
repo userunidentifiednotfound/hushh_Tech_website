@@ -5,8 +5,14 @@ export interface PrimaryCtaButtonProps extends ButtonProps {
   children?: React.ReactNode;
 }
 
+/** Minimum interactive height (~48px) for touch / WCAG target-size guidance. */
+const DEFAULT_MIN_H = "48px";
+
 export function PrimaryCtaButton({
   children = "Create Your Hushh ID →",
+  minH,
+  _focus,
+  _focusVisible,
   ...rest
 }: PrimaryCtaButtonProps) {
   return (
@@ -30,11 +36,16 @@ export function PrimaryCtaButton({
         transform: "scale(0.98)",
         boxShadow: "0 6px 18px rgba(0, 120, 170, 0.45)",
       }}
-      _focusVisible={{
-        outline: "2px solid rgba(0, 169, 224, 0.9)",
-        outlineOffset: "2px",
-      }}
       {...rest}
+      minH={minH ?? DEFAULT_MIN_H}
+      _focus={{ outline: "none", ..._focus }}
+      _focusVisible={{
+        outline: "2px solid rgba(255, 255, 255, 0.95)",
+        outlineOffset: "3px",
+        boxShadow:
+          "0 0 0 2px rgba(0, 120, 170, 0.95), 0 0 0 5px rgba(255, 255, 255, 0.45)",
+        ..._focusVisible,
+      }}
     >
       {children}
     </Button>

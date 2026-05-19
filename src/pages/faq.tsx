@@ -133,6 +133,7 @@ const FaqPage: React.FC = () => {
           maxW="4xl"
           mx="auto"
           w="100%"
+          role="list"
         >
           {faqs.map((faq, index: number) => {
             const isOpen = openIndex === index;
@@ -142,6 +143,7 @@ const FaqPage: React.FC = () => {
             return (
             <Box
               key={index}
+              role="listitem"
               bg="white"
               borderRadius="2xl"
               overflow="hidden"
@@ -207,6 +209,9 @@ const FaqPage: React.FC = () => {
                       display="block"
                       flex="1"
                       pr={1}
+                      minW={0}
+                      overflowWrap="anywhere"
+                      wordBreak="normal"
                       transition="color 0.2s ease"
                       _groupHover={{ color: "black" }}
                     >

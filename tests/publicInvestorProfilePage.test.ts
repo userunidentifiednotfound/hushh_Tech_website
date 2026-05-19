@@ -154,13 +154,16 @@ describe("PublicInvestorProfilePage", () => {
   });
 
   it("shows full names and verified copy for confirmed public profiles", async () => {
+    const longEmail =
+      "n***h@exceptionally-long-investor-domain-name-for-layout-testing.example";
+
     fetchPublicInvestorProfileBySlugMock.mockResolvedValue({
       slug: "neelesh-meena-4960f9fe",
       profile_url: "https://hushhtech.com/investor/neelesh-meena-4960f9fe",
       is_confirmed: true,
       basic_info: {
         name: "Neelesh Meena",
-        email: "n***h@example.com",
+        email: longEmail,
         age: 32,
         organisation: "Hushh",
       },
@@ -188,6 +191,14 @@ describe("PublicInvestorProfilePage", () => {
     expect(container.textContent).toContain("Verified Investor Profile");
     expect(container.textContent).toContain("Verified");
     expect(container.textContent).toContain("Investment Profile");
+
+    const emailValue = container.querySelector(
+      '[data-testid="profile-email-value"]',
+    ) as HTMLElement | null;
+
+    expect(emailValue?.textContent).toBe(longEmail);
+    expect(emailValue?.className).toContain("break-words");
+    expect(emailValue?.style.overflowWrap).toBe("anywhere");
 
     const metadataValues = container.querySelectorAll('[data-testid="profile-metadata-value"]');
     const longMetadataValue = Array.from(metadataValues).find((value) =>

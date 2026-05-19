@@ -175,6 +175,23 @@ describe("WalletCardPreviewModal", () => {
     );
   });
 
+  it("groups wallet footer actions in one responsive action region", async () => {
+    await renderModal({
+      appleWalletSupported: true,
+      googleWalletAvailable: true,
+      onAddToAppleWallet: () => undefined,
+      onAddToGoogleWallet: () => undefined,
+    });
+
+    const actions = document.body.querySelector(
+      '[data-testid="wallet-preview-actions"]'
+    );
+
+    expect(actions).not.toBeNull();
+    expect(actions?.textContent).toContain("Add to Apple Wallet");
+    expect(actions?.textContent).toContain("Add to Google Wallet");
+  });
+
   it("shows helper copy instead of the Apple add action when unsupported", async () => {
     await renderModal();
 

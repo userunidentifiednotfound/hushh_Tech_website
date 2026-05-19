@@ -40,7 +40,7 @@ const Business = () => {
         <Heading
           fontWeight={"700"}
           lineHeight={"1.2"}
-          fontSize={{ md: "1.25rem", base: "0.65rem" }}
+          fontSize={{ md: "1.25rem", base: "1rem" }}
           as={"h1"}
           color={"rgba(61,61,145,1)"}
           mt={{ md: "4rem", base: "2rem" }}
@@ -61,7 +61,7 @@ const Business = () => {
           color={"#434343"}
           fontWeight={"700"}
           lineHeight={"1.2"}
-          fontSize={{ md: "1.5rem", base: "0.8rem" }}
+          fontSize={{ md: "1.5rem", base: "1.125rem" }}
         >
           Revolutionize customer insights, Personalize commerce,
           <br></br>
@@ -70,7 +70,7 @@ const Business = () => {
 
         <Text
           fontWeight={"400"}
-          fontSize={{ md: "1rem", base: "0.5rem" }}
+          fontSize={{ md: "1rem", base: "0.9375rem" }}
           lineHeight={"1.2"}
         >
           Hushh's AI-first platform bridges the gap by empowering customers to
@@ -104,7 +104,7 @@ const Business = () => {
             fontWeight={"700"}
             lineHeight={"1.2"}
             color={"rgba(28,28,28,1)"}
-            fontSize={{ md: "1.5rem", base: "0.65rem" }}
+            fontSize={{ md: "1.5rem", base: "1rem" }}
           >
             Hushh Ecosystem
           </Text>
@@ -112,7 +112,7 @@ const Business = () => {
             fontWeight={"400"}
             lineHeight={"1.2"}
             color={"rgba(28,28,28,1)"}
-            fontSize={{ md: "1rem", base: "0.5rem" }}
+            fontSize={{ md: "1rem", base: "0.9375rem" }}
           >
             Hushh offers a suite of products designed to revolutionize how
             businesses interact with their customers in the age of personalized
@@ -122,7 +122,7 @@ const Business = () => {
             fontWeight={"400"}
             lineHeight={"1.2"}
             color={"rgba(28,28,28,1)"}
-            fontSize={{ md: "1rem", base: "0.5rem" }}
+            fontSize={{ md: "1rem", base: "0.9375rem" }}
           >
             Forget generic marketing and one-size-fits-all approaches.
           </Text>
@@ -130,7 +130,7 @@ const Business = () => {
             fontWeight={"400"}
             lineHeight={"1.2"}
             color={"rgba(28,28,28,1)"}
-            fontSize={{ md: "1rem", base: "0.5rem" }}
+            fontSize={{ md: "1rem", base: "0.9375rem" }}
           >
             Hushh empowers you to create{" "}
             <span style={{ fontWeight: "500" }}>meaningful connections </span>{" "}
@@ -142,7 +142,7 @@ const Business = () => {
 
       <Text
         my={{ md: "2rem", base: "1rem" }}
-        fontSize={{ md: "1.5rem", base: "0.75rem" }}
+        fontSize={{ md: "1.5rem", base: "1.125rem" }}
         color={"#434343"}
         fontWeight={"700"}
         textAlign={"center"}
@@ -163,7 +163,7 @@ const Business = () => {
           fontWeight={"700"}
           lineHeight={"1.2"}
           color={"#434343"}
-          fontSize={{ md: "1.5rem", base: "0.75rem" }}
+          fontSize={{ md: "1.5rem", base: "1.125rem" }}
         >
           Hushh Developer APIs
         </Text>
@@ -172,7 +172,7 @@ const Business = () => {
           lineHeight={"1.2"}
           mt={{ md: "1.5rem", base: "0.75rem" }}
           color={"rgba(28,28,28,1)"}
-          fontSize={{ md: "1.16rem", base: "0.5rem" }}
+          fontSize={{ md: "1.16rem", base: "0.9375rem" }}
         >
           Unlock the{" "}
           <span style={{ fontWeight: "500" }}>
@@ -236,13 +236,13 @@ const Business = () => {
                 />
               </AccordionButton>
             </Box>
-            <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.8rem" }}>
+            <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.9375rem" }}>
               <Box maxWidth="280px" mx="auto" textAlign={"left"}>
                 <Text
                   color={"#030712"}
                   lineHeight={"1.38"}
                   fontWeight={"400"}
-                  fontSize={{ md: "1rem", base: "0.5rem" }}
+                  fontSize={{ md: "1rem", base: "0.9375rem" }}
                 >
                   Integrate Hushh APIs into your systems to access valuable,
                   zero-party customer data with user consent, adhering to GDPR
@@ -301,13 +301,13 @@ const Business = () => {
                 />
               </AccordionButton>
             </Box>
-            <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.8rem" }}>
+            <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.9375rem" }}>
               <Box maxWidth="280px" mx="auto" textAlign={"left"}>
                 <Text
                   color={"#030712"}
                   lineHeight={"1.38"}
                   fontWeight={"400"}
-                  fontSize={{ md: "1rem", base: "0.5rem" }}
+                  fontSize={{ md: "1rem", base: "0.9375rem" }}
                 >
                   Leverage user preferences, purchase history, and behavior to
                   deliver targeted marketing, personalized recommendations, and
@@ -357,13 +357,13 @@ const Business = () => {
                 />
               </AccordionButton>
             </Box>
-            <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.8rem" }}>
+            <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.9375rem" }}>
               <Box maxWidth="280px" mx="auto" textAlign={"left"}>
                 <Text
                   color={"#030712"}
                   lineHeight={"1.38"}
                   fontWeight={"400"}
-                  fontSize={{ md: "1rem", base: "0.5rem" }}
+                  fontSize={{ md: "1rem", base: "0.9375rem" }}
                 >
                   Empower your users to control their data and decide what they
                   share, fostering a relationship built on transparency and
@@ -386,7 +386,7 @@ const Business = () => {
         <Text
           textAlign={"left"}
           fontWeight={"700"}
-          fontSize={{ md: "1.5rem", base: "0.75rem" }}
+          fontSize={{ md: "1.5rem", base: "1.125rem" }}
           lineHeight={"1.2"}
           color={"rgba(28,28,28,1)"}
           alignSelf="flex-start"
@@ -487,7 +487,12 @@ const Business = () => {
     </Flex>
   <Box  bg="#F5F7F9" mb={{md:'2rem',base:'1rem'}} w={'100%'} display={'flex'} alignItems={'center'} justifyContent={'center'} textAlign={'center'}>
     <Button
-          minW={{ md: "780px", base: "8rem" }}
+          minW={{ md: "780px", base: "0" }}
+          maxW={{ base: "100%", md: "none" }}
+          w={{ base: "100%", md: "auto" }}
+          whiteSpace="normal"
+          h="auto"
+          py={{ base: 3, md: 2 }}
           px={"12px"}
           bg={"rgba(153, 40, 112, 1)"}
           color={"white"}
@@ -526,7 +531,7 @@ VIBE Search API
           color={"#434343"}
           fontWeight={"400"}
           lineHeight={"1.2"}
-          fontSize={{ md: "1.17rem", base: "0.65rem" }}
+          fontSize={{ md: "1.17rem", base: "0.9375rem" }}
         >
           Delivers <span style={{fontWeight:'500'}}>highly personalized search results</span>  using <span style={{fontWeight:'500'}}>semantic analysis</span> , image search, <br></br> and  <span style={{fontWeight:'500'}}>implicit behavior understanding</span>. Boosts   <span style={{fontWeight:'500'}}>customer satisfaction, <br></br> engagement, and revenue.</span>
 
@@ -578,7 +583,7 @@ VIBE Search API
                 />
               </AccordionButton>
             </Box>
-            <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.8rem" }}>
+            <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.9375rem" }}>
               <Box maxWidth="280px" mx="auto">
                 <UnorderedList spacing={3} textAlign="left">
                   <ListItem>
@@ -634,7 +639,7 @@ VIBE Search API
                 />
               </AccordionButton>
             </Box>
-            <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.8rem" }}>
+            <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.9375rem" }}>
               <Box maxWidth="280px" mx="auto">
                 <UnorderedList spacing={3} textAlign="left">
                   <ListItem>
@@ -690,7 +695,7 @@ VIBE Search API
                 />
               </AccordionButton>
             </Box>
-            <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.8rem" }}>
+            <AccordionPanel pb={4} fontSize={{ md: "1rem", base: "0.9375rem" }}>
               <Box maxWidth="280px" mx="auto">
                 <UnorderedList spacing={3} textAlign="left">
                   <ListItem>

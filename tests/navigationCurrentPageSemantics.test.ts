@@ -71,7 +71,7 @@ describe("navigation current-page semantics", () => {
     });
 
     const currentItem = container.querySelector("[aria-current='page']");
-    const navItems = Array.from(container.querySelectorAll("[role='group']"));
+    const navItems = Array.from(container.querySelectorAll("[role='link']"));
 
     expect(currentItem?.textContent).toContain("Community");
     expect(navItems.filter((item) => item.getAttribute("aria-current") === "page")).toHaveLength(1);

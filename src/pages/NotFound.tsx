@@ -47,7 +47,7 @@ export default function NotFound() {
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition hover:bg-gray-100"
               >
                 <span>Back to Home</span>
-                <span className="material-symbols-outlined text-base">
+                <span className="material-symbols-outlined text-base" aria-hidden="true">
                   arrow_forward
                 </span>
               </Link>
@@ -56,7 +56,7 @@ export default function NotFound() {
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition hover:border-white/30 hover:bg-white/10"
               >
                 <span>Contact Hushh</span>
-                <span className="material-symbols-outlined text-base">
+                <span className="material-symbols-outlined text-base" aria-hidden="true">
                   support_agent
                 </span>
               </Link>
@@ -80,7 +80,7 @@ export default function NotFound() {
                       className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/80 transition hover:border-hushh-blue/50 hover:bg-hushh-blue/10 hover:text-white"
                     >
                       <span>{link.label}</span>
-                      <span className="material-symbols-outlined text-base">
+                      <span className="material-symbols-outlined text-base" aria-hidden="true">
                         north_east
                       </span>
                     </Link>

@@ -158,6 +158,7 @@ const GlobalNDAGate: React.FC<GlobalNDAGateProps> = ({ children }) => {
           // Store the intended destination for redirect after signing
           sessionStorage.setItem('nda_redirect_after', pathname);
           navigate('/sign-nda', { replace: true });
+          return; // Stop execution here
         }
       } catch (error) {
         if (cancelled) {
@@ -175,6 +176,7 @@ const GlobalNDAGate: React.FC<GlobalNDAGateProps> = ({ children }) => {
         // On non-timeout error, redirect to NDA page to be safe
         sessionStorage.setItem('nda_redirect_after', pathname);
         navigate('/sign-nda', { replace: true });
+        return; // Stop execution here
       } finally {
         if (!cancelled) {
           setIsChecking(false);
@@ -198,6 +200,9 @@ const GlobalNDAGate: React.FC<GlobalNDAGateProps> = ({ children }) => {
         alignItems="center"
         justifyContent="center"
         bg="white"
+        role="status"
+        aria-live="polite"
+        aria-busy="true"
       >
         <VStack spacing={4}>
           <Spinner
@@ -206,13 +211,22 @@ const GlobalNDAGate: React.FC<GlobalNDAGateProps> = ({ children }) => {
             emptyColor="gray.200"
             color="black"
             size="xl"
+            label="Verifying your access permissions"
           />
-          <Text color="gray.600" fontSize="sm">
+          <Text color="gray.600" fontSize="sm" fontWeight="medium">
             Verifying access...
           </Text>
         </VStack>
       </Box>
     );
+  }
+
+  // Security Check: Only render children if access is explicitly allowed
+  // or it's a public/guest-accessible route.
+  const canAccess = hasSignedNDA || canGuestAccessRoute(location.pathname) || isPublicSharedProfileRoute(location.pathname);
+  
+  if (!canAccess && status === 'authenticated') {
+    return null; // Fallback while navigation to /sign-nda completes
   }
 
   // Render children if access is allowed

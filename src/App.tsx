@@ -329,7 +329,6 @@ function App() {
                 <NDARequestModalComponent
                   session={session}
                   onSubmit={(result: string) => {
-                    console.log("NDA submission result:", result);
                     // Handle post-submission actions here
                     if (result === "Approved" || result === "Pending" || result === "Requested permission") {
                       // Redirect to appropriate page on success

@@ -22,12 +22,26 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ variant = 'light' }
   const optionRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const menuId = 'language-switcher-menu';
 
-  // Get current language short code
-  const currentLang = languages.find(l => l.code === i18n.language)?.shortCode || 'EN';
+  // Safely extract base language code (handles region codes like 'en-US')
+  const baseLangCode = (i18n.language || 'en').split('-')[0];
+  const currentLangObj = languages.find(l => l.code === baseLangCode) || languages[0];
+  const currentLang = currentLangObj.shortCode;
+  
   const currentLangIndex = Math.max(
-    languages.findIndex((language) => language.code === i18n.language),
+    languages.findIndex((language) => language.code === baseLangCode),
     0
   );
+
+  // Reactively handle document direction and language attributes
+  useEffect(() => {
+    if (baseLangCode === 'ar') {
+      document.documentElement.setAttribute('dir', 'rtl');
+      document.documentElement.setAttribute('lang', 'ar');
+    } else {
+      document.documentElement.setAttribute('dir', 'ltr');
+      document.documentElement.setAttribute('lang', baseLangCode);
+    }
+  }, [baseLangCode]);
 
   const closeDropdown = React.useCallback((returnFocus = false) => {
     setIsOpen(false);
@@ -77,16 +91,6 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ variant = 'light' }
 
   const changeLanguage = React.useCallback((langCode: string) => {
     i18n.changeLanguage(langCode);
-    
-    // Update document direction for RTL languages
-    if (langCode === 'ar') {
-      document.documentElement.setAttribute('dir', 'rtl');
-      document.documentElement.setAttribute('lang', 'ar');
-    } else {
-      document.documentElement.setAttribute('dir', 'ltr');
-      document.documentElement.setAttribute('lang', langCode);
-    }
-    
     closeDropdown(true);
   }, [closeDropdown, i18n]);
 
@@ -191,6 +195,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ variant = 'light' }
             : 'bg-gray-100 hover:bg-gray-200 border border-transparent dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-700'
         }`}
         aria-label="Select language"
+        title={`Change language (${currentLangObj.name})`}
         aria-haspopup="menu"
         aria-expanded={isOpen}
         aria-controls={isOpen ? menuId : undefined}
@@ -199,7 +204,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ variant = 'light' }
         <span className={`text-xs font-semibold ${isDark ? 'text-gray-300' : 'text-gray-700 dark:text-gray-300'}`}>
           {currentLang}
         </span>
-        <FiChevronDown className={`w-3.5 h-3.5 transition-transform ${isOpen ? 'rotate-180' : ''} ${isDark ? 'text-gray-500' : 'text-gray-500'}`} />
+        <FiChevronDown className={`w-3.5 h-3.5 transition-transform ${isOpen ? 'rotate-180' : ''} ${isDark ? 'text-gray-400' : 'text-gray-500 dark:text-gray-400'}`} />
       </button>
 
       {/* Dropdown Menu */}
@@ -208,10 +213,10 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ variant = 'light' }
           id={menuId}
           role="menu"
           aria-label="Language options"
-          className="absolute right-0 mt-2 w-40 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-[200]"
+          className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 py-2 z-[200]"
         >
           {languages.map((lang, index) => {
-            const isSelected = i18n.language === lang.code;
+            const isSelected = baseLangCode === lang.code;
             return (
               <button
                 key={lang.code}
@@ -223,10 +228,10 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ variant = 'light' }
                 aria-checked={isSelected}
                 onClick={() => changeLanguage(lang.code)}
                 onKeyDown={(event) => handleOptionKeyDown(event, index, lang.code)}
-                className={`w-full flex items-center justify-between px-4 py-2.5 text-left text-sm transition-colors
+                className={`w-full flex items-center justify-between px-4 py-2.5 text-left text-sm transition-colors focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700
                   ${isSelected 
-                    ? 'bg-[#135bec]/5 text-[#135bec] font-semibold' 
-                    : 'text-gray-700 hover:bg-gray-50'
+                    ? 'bg-[#135bec]/5 text-[#135bec] font-semibold dark:bg-[#135bec]/20 dark:text-[#5b8ef2]' 
+                    : 'text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700'
                   }`}
               >
                 <span>{lang.name}</span>

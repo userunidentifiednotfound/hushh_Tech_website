@@ -1,6 +1,10 @@
 import React from 'react';
 import { MarketItem } from '../types';
 
+const MARKET_WIDGET_ROW_COUNT = 10;
+const marketWidgetRowClassName =
+  "flex min-h-[57px] w-full justify-between items-center py-3 border-b border-neutral-800 last:border-0 px-2 -mx-2 rounded-lg";
+
 interface MarketCardProps {
   title: string;
   items?: MarketItem[];
@@ -14,11 +18,11 @@ export const MarketCard: React.FC<MarketCardProps> = ({ title, items = [], isLoa
       <h3 className="text-lg font-semibold mb-6 text-white tracking-tight">
         {title}
       </h3>
-      <div className="flex-1 overflow-y-auto space-y-1 custom-scrollbar pr-2">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden space-y-1 custom-scrollbar pr-2 [scrollbar-gutter:stable]">
         {isLoading ? (
-          <div className="space-y-5 mt-2">
-            {[...Array(6)].map((_, i) => (
-               <div key={i} className="flex justify-between items-center py-2 border-b border-neutral-800 last:border-0">
+          <div aria-hidden="true" className="space-y-1">
+            {Array.from({ length: MARKET_WIDGET_ROW_COUNT }).map((_, i) => (
+               <div key={i} className={marketWidgetRowClassName}>
                   <div className="space-y-2 w-2/3">
                     <div className="h-4 animate-shimmer-dark rounded-md w-3/4"></div>
                     <div className="h-3 animate-shimmer-dark rounded-md w-1/3"></div>
@@ -46,7 +50,7 @@ export const MarketCard: React.FC<MarketCardProps> = ({ title, items = [], isLoa
               key={idx}
               type="button"
               disabled={!onSelect}
-              className="group flex w-full justify-between items-center text-left cursor-pointer disabled:cursor-default py-3 border-b border-neutral-800 last:border-0 hover:bg-neutral-800/50 disabled:hover:bg-transparent focus-visible:outline focus-visible:outline-2 focus-visible:outline-neutral-500 focus-visible:outline-offset-2 rounded-lg px-2 -mx-2 transition-colors duration-300"
+              className={`group text-left cursor-pointer disabled:cursor-default hover:bg-neutral-800/50 disabled:hover:bg-transparent focus-visible:outline focus-visible:outline-2 focus-visible:outline-neutral-500 focus-visible:outline-offset-2 transition-colors duration-300 ${marketWidgetRowClassName}`}
               onClick={() => onSelect && onSelect(item.name)}
             >
               <div className="flex flex-col pr-4 overflow-hidden flex-1 min-w-0">

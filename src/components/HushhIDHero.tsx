@@ -5,6 +5,12 @@ interface HushhIDHeroProps {
   onCreateClick: () => void;
 }
 
+const BENEFITS = [
+  'Create your investor profile once.',
+  'Save to wallet. Share anywhere.',
+  'No more repetitive forms.',
+];
+
 /**
  * Mobile-first investor profile hero rebuilt with a WorldQuant-inspired,
  * white-on-white editorial layout, hairline micro-accents, and subtle tactile states.
@@ -13,11 +19,6 @@ export const HushhIDHero: React.FC<HushhIDHeroProps> = ({
   userName = 'there',
   onCreateClick,
 }) => {
-  const benefits = [
-    'Create your investor profile once.',
-    'Save to wallet. Share anywhere.',
-    'No more repetitive forms.',
-  ];
 
   return (
     <section className="bg-white">
@@ -52,24 +53,25 @@ export const HushhIDHero: React.FC<HushhIDHeroProps> = ({
 
         {/* Benefit panel */}
         <div className="mt-6">
-          <div className="rounded-[18px] border border-[#E5E7EB] divide-y divide-[#E5E7EB] overflow-hidden">
-            {benefits.map((benefit) => (
-              <div
+          <ul className="rounded-[18px] border border-[#E5E7EB] divide-y divide-[#E5E7EB] overflow-hidden list-none p-0">
+            {BENEFITS.map((benefit) => (
+              <li
                 key={benefit}
-                className="flex items-center gap-4 px-4 py-4 min-h-[64px] text-left transition-colors duration-150 active:bg-[#F9FAFB]"
+                className="flex items-center gap-4 px-4 py-4 min-h-[64px] text-left transition-colors duration-150 hover:bg-[#F9FAFB] active:bg-[#F3F4F6]"
               >
-                <span className="w-2 h-2 rounded-full bg-[#00A9E0] flex-shrink-0 mt-[2px]" />
+                <span className="w-2 h-2 rounded-full bg-[#00A9E0] flex-shrink-0 mt-[2px]" aria-hidden="true" />
                 <p className="text-[18px] font-semibold leading-[1.45] text-[#111827]">{benefit}</p>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
 
         {/* CTA area */}
         <div className="mt-6 space-y-3">
           <button
             onClick={onCreateClick}
-            className="w-full h-[54px] rounded-[16px] text-[#0B1120] text-[17px] font-semibold tracking-[0.01em] transition-[transform,filter] duration-150 active:scale-[0.985] active:brightness-[0.94] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0B1120] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            aria-label="Create Your Hushh ID"
+            className="w-full h-[54px] rounded-[16px] text-[#0B1120] text-[17px] font-semibold tracking-[0.01em] transition-[transform,filter,background] duration-150 hover:brightness-[1.04] active:scale-[0.985] active:brightness-[0.94] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0B1120] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             style={{
               background: 'linear-gradient(to right, #00A9E0, #6DD3EF)',
               fontWeight: 500,
